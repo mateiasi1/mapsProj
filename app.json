@@ -1,0 +1,19 @@
+{
+    "expo": {
+        "android": {
+            "package": "com.company",
+            "config": {
+                "googleMaps": {
+                    "apiKey": "<android maps key>"
+                }
+            }
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "cityZen",
+            "config": {
+                "googleMapsApiKey": "AIzaSyApryFx4nKs0bV_2yXY3KLHV65JKuHH5CY"
+            }
+        }
+    }
+}
