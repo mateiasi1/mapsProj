@@ -2,16 +2,10 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import {
-  FAB,
-  Button,
-  Paragraph,
-  Dialog,
-  Portal,
-  Provider,
-} from "react-native-paper";
+import { FAB } from "react-native-paper";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCarCrash, faLock } from "@fortawesome/free-solid-svg-icons";
+import EventPickerDialog from "./EventPickerDialog";
 
 type Prop = {
   id: number;
@@ -66,22 +60,7 @@ const HomeScreen = () => {
         onPress={onMapPress}
         //onPress={(event) => this.onMapPress(event)}
       >
-        <Provider>
-          <View>
-            <Portal>
-              <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Alert</Dialog.Title>
-                <Dialog.Content>
-                  <Paragraph>This is simple dialog</Paragraph>
-                  <FontAwesomeIcon icon={faCarCrash} size={40} />
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={hideDialog}>Done</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
-          </View>
-        </Provider>
+        <EventPickerDialog visible={visible} hideDialog={hideDialog} />
         {markers.map(
           (marker) =>
             marker.latitude !== null && (
