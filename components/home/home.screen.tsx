@@ -3,16 +3,38 @@ import { SafeAreaView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faCarCrash, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCar,
+  faCarCrash,
+  faLock,
+  IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
 import EventPickerDialog from "./EventPickerDialog";
-
+import Event from "../../models/Event";
 type Prop = {
   id: number;
   latitude: number;
   longitude: number;
 };
 
+const events = [
+  {
+    id: 1,
+    title: "Car crash",
+    icon: faCarCrash,
+    color: "black",
+    subEvents: [
+      {
+        id: 1,
+        title: "Car crash",
+        icon: faCarCrash,
+        color: "black",
+      },
+      { id: 2, title: "Car", icon: faCar, color: "black" },
+    ],
+  },
+  { id: 2, title: "Car", icon: faCar, color: "black" },
+] as Event[];
 const HomeScreen = () => {
   const [markers, setMarkers] = useState<Prop[]>([
     {
@@ -60,7 +82,11 @@ const HomeScreen = () => {
         onPress={onMapPress}
         //onPress={(event) => this.onMapPress(event)}
       >
-        <EventPickerDialog visible={visible} hideDialog={hideDialog} />
+        <EventPickerDialog
+          visible={visible}
+          hideDialog={hideDialog}
+          events={events}
+        />
         {markers.map(
           (marker) =>
             marker.latitude !== null && (
