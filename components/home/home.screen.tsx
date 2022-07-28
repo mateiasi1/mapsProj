@@ -14,7 +14,7 @@ import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 type Prop = {
-  id: number;
+  id: string;
   latitude: number;
   longitude: number;
 };
@@ -39,23 +39,6 @@ const events = [
 ] as Event[];
 const HomeScreen = () => {
   const [placeId, setPlaceId] = useState("");
-
-  useEffect(() => {
-    debugger;
-    axios
-      .get(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`
-      )
-      .then((res) => {
-        console.log(
-          "lat:" +
-            res.geometry.location.lat +
-            " long: " +
-            res.geometry.location.lng
-        );
-      })
-      .catch((err) => {});
-  }, [placeId]);
   const [markers, setMarkers] = useState<Prop[]>([
     {
       id: null,
@@ -63,6 +46,34 @@ const HomeScreen = () => {
       longitude: null,
     },
   ]);
+  useEffect(() => {
+    debugger;
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`
+      )
+      .then((res) => {
+        // console.log(res.data);
+        console.log(
+          "lat:" +
+            res.data.result.geometry.location.lat +
+            " long: " +
+            res.data.result.geometry.location.lng
+        );
+        setMarkers([
+          ...markers,
+          {
+            id: placeId,
+            latitude: res.data.result.geometry.location.lat,
+            longitude: res.data.result.geometry.location.lng,
+          } as Prop,
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [placeId]);
+
   const [visible, setVisible] = useState(false);
   const onMapPress = (event) => {
     const obj = {
