@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import EventPickerDialog from "./EventPickerDialog";
 import Event from "../../models/Event";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 type Prop = {
   id: number;
   latitude: number;
@@ -64,6 +65,27 @@ const HomeScreen = () => {
   const hideDialog = () => setVisible(false);
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.search}>
+        <View
+          style={{
+            marginTop: "5%",
+            width: "80%",
+            display: "flex",
+          }}
+        >
+          <GooglePlacesAutocomplete
+            placeholder="Search"
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              console.log(data, details);
+            }}
+            query={{
+              key: "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8",
+              language: "en",
+            }}
+          />
+        </View>
+      </View>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
@@ -82,11 +104,6 @@ const HomeScreen = () => {
         onPress={onMapPress}
         //onPress={(event) => this.onMapPress(event)}
       >
-        <EventPickerDialog
-          visible={visible}
-          hideDialog={hideDialog}
-          events={events}
-        />
         {markers.map(
           (marker) =>
             marker.latitude !== null && (
@@ -109,7 +126,11 @@ const HomeScreen = () => {
             )
         )}
       </MapView>
-
+      <EventPickerDialog
+        visible={visible}
+        hideDialog={hideDialog}
+        events={events}
+      />
       <FAB icon="plus" style={styles.fab} onPress={showDialog} />
     </SafeAreaView>
   );
@@ -124,13 +145,22 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: "30%",
+    top: 100,
+    // height: Dimensions.get("window").height,
   },
   fab: {
     position: "absolute",
     right: 0,
     bottom: 0,
     margin: 16,
+  },
+  search: {
+    position: "absolute",
+    right: 0,
+    top: 30,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
   },
 });
 export default HomeScreen;
