@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { Button, SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
@@ -13,6 +13,7 @@ import EventPickerDialog from "./EventPickerDialog";
 import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
+
 type Prop = {
   id: string;
   latitude: number;
@@ -37,7 +38,7 @@ const events = [
   },
   { id: 2, title: "Car", icon: faCar, color: "black" },
 ] as Event[];
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [placeId, setPlaceId] = useState("");
   const [markers, setMarkers] = useState<Prop[]>([
     {
@@ -63,7 +64,9 @@ const HomeScreen = () => {
         setMarkers([
           ...markers,
           {
-            id: placeId,
+            id:
+              res.data.result.geometry.location.lat +
+              res.data.result.geometry.location.lng,
             latitude: res.data.result.geometry.location.lat,
             longitude: res.data.result.geometry.location.lng,
           } as Prop,
@@ -76,14 +79,22 @@ const HomeScreen = () => {
 
   const [visible, setVisible] = useState(false);
   const onMapPress = (event) => {
+    if (visible === true) {
+      setVisible(false);
+      return;
+    }
     const obj = {
-      id: event.nativeEvent.coordinate.latitude,
+      id:
+        event.nativeEvent.coordinate.latitude +
+        event.nativeEvent.coordinate.longitude,
       latitude: event.nativeEvent.coordinate.latitude,
       longitude: event.nativeEvent.coordinate.longitude,
     } as Prop;
     debugger;
 
     if (markers.some((item) => item.id === obj.id)) {
+      console.log("item" + obj.id);
+      console.log(markers);
       setMarkers(markers.filter((item) => item.id !== obj.id));
 
       return;
@@ -93,9 +104,14 @@ const HomeScreen = () => {
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.search}>
+        <Button
+          title="Go to Details"
+          onPress={() => navigation.navigate("Details")}
+        />
         <View
           style={{
             marginTop: "5%",
@@ -110,6 +126,7 @@ const HomeScreen = () => {
               console.log(data.place_id);
               setPlaceId(data.place_id);
             }}
+            fetchDetails
             query={{
               key: apiKey,
               language: "en",
@@ -157,6 +174,7 @@ const HomeScreen = () => {
             )
         )}
       </MapView>
+
       <EventPickerDialog
         visible={visible}
         hideDialog={hideDialog}
@@ -176,9 +194,9 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: "30%",
+    // height: "30%",
     top: 100,
-    // height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height,
   },
   fab: {
     position: "absolute",
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
   search: {
     position: "absolute",
     right: 0,
-    top: 30,
+    top: 0,
     width: Dimensions.get("window").width,
     zIndex: 1,
   },
