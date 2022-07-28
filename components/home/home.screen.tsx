@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
@@ -12,12 +12,13 @@ import {
 import EventPickerDialog from "./EventPickerDialog";
 import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import axios from "axios";
 type Prop = {
   id: number;
   latitude: number;
   longitude: number;
 };
-
+const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
 const events = [
   {
     id: 1,
@@ -37,6 +38,24 @@ const events = [
   { id: 2, title: "Car", icon: faCar, color: "black" },
 ] as Event[];
 const HomeScreen = () => {
+  const [placeId, setPlaceId] = useState("");
+
+  useEffect(() => {
+    debugger;
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`
+      )
+      .then((res) => {
+        console.log(
+          "lat:" +
+            res.geometry.location.lat +
+            " long: " +
+            res.geometry.location.lng
+        );
+      })
+      .catch((err) => {});
+  }, [placeId]);
   const [markers, setMarkers] = useState<Prop[]>([
     {
       id: null,
@@ -69,7 +88,7 @@ const HomeScreen = () => {
         <View
           style={{
             marginTop: "5%",
-            width: "80%",
+            width: "100%",
             display: "flex",
           }}
         >
@@ -77,10 +96,11 @@ const HomeScreen = () => {
             placeholder="Search"
             onPress={(data, details = null) => {
               // 'details' is provided when fetchDetails = true
-              console.log(data, details);
+              console.log(data.place_id);
+              setPlaceId(data.place_id);
             }}
             query={{
-              key: "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8",
+              key: apiKey,
               language: "en",
             }}
           />
