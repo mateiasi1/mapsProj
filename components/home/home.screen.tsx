@@ -3,12 +3,7 @@ import { Button, SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
-import {
-  faCar,
-  faCarCrash,
-  faLock,
-  IconDefinition,
-} from "@fortawesome/free-solid-svg-icons";
+
 import EventPickerDialog from "./EventPickerDialog";
 import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -20,24 +15,7 @@ type Prop = {
   longitude: number;
 };
 const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
-const events = [
-  {
-    id: 1,
-    title: "Car crash",
-    icon: faCarCrash,
-    color: "black",
-    subEvents: [
-      {
-        id: 1,
-        title: "Car crash",
-        icon: faCarCrash,
-        color: "black",
-      },
-      { id: 2, title: "Car", icon: faCar, color: "black" },
-    ],
-  },
-  { id: 2, title: "Car", icon: faCar, color: "black" },
-] as Event[];
+
 const HomeScreen = ({ navigation }) => {
   const [placeId, setPlaceId] = useState("");
   const [markers, setMarkers] = useState<Prop[]>([
@@ -175,12 +153,12 @@ const HomeScreen = ({ navigation }) => {
         )}
       </MapView>
 
-      <EventPickerDialog
-        visible={visible}
-        hideDialog={hideDialog}
-        events={events}
+      {/* <EventPickerDialog visible={visible} hideDialog={hideDialog} /> */}
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() => navigation.navigate("Events")}
       />
-      <FAB icon="plus" style={styles.fab} onPress={showDialog} />
     </SafeAreaView>
   );
 };

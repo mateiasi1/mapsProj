@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DetailsScreen from "./components/home/DetailsScreen";
+import EventsScreen from "./components/home/EventsScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -41,6 +42,13 @@ export default function App() {
           component={DetailsScreen}
           options={{
             title: "Details",
+          }}
+        />
+        <Stack.Screen
+          name="Events"
+          component={EventsScreen}
+          options={{
+            title: "Events",
           }}
         />
       </Stack.Navigator>
