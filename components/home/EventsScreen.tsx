@@ -1,7 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { FC, useState } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { Paragraph } from "react-native-paper";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  Pressable,
+} from "react-native";
+import { Button, Paragraph } from "react-native-paper";
 import {
   faCar,
   faCarCrash,
@@ -30,10 +36,10 @@ const events = [
   },
   { id: 2, title: "Car", icon: faCar, color: "black" },
   { id: 3, title: "Car1", icon: faCar, color: "black" },
-  { id: 3, title: "Car1", icon: faCar, color: "black" },
-  { id: 3, title: "Car1", icon: faCar, color: "black" },
-  { id: 3, title: "Car1", icon: faCar, color: "black" },
-  { id: 3, title: "Car1", icon: faCar, color: "black" },
+  { id: 4, title: "Car1", icon: faCar, color: "black" },
+  { id: 5, title: "Car1", icon: faCar, color: "black" },
+  { id: 6, title: "Car1", icon: faCar, color: "black" },
+  { id: 7, title: "Car1", icon: faCar, color: "black" },
 ] as Event[];
 const EventsScreen = ({ navigation }) => {
   const [selectedEvent, setSelectedEvent] = useState<Event>(null);
@@ -55,8 +61,19 @@ const EventsScreen = ({ navigation }) => {
     }
     setSelectedSubEvent(subEvent);
   };
+
+  const onPress = () => {
+    navigation.navigate("Map");
+  };
   return (
-    <View>
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "95%",
+      }}
+    >
       {!showSubEvents && (
         <View style={styles.rootOptionsContent}>
           {events.map((event) => (
@@ -105,6 +122,17 @@ const EventsScreen = ({ navigation }) => {
           />
         </View>
       )}
+      <View>
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
+        />
+        <Pressable style={styles.button} onPress={onPress}>
+          <Text style={styles.text}>Închide</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -120,7 +148,22 @@ const styles = StyleSheet.create({
     height: 70,
     padding: 13,
   },
-
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+  },
+  text: {
+    fontSize: 20,
+    padding: 5,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "rgb(49,115,219)",
+  },
   rootOptionsContent: {
     display: "flex",
     justifyContent: "space-between",
