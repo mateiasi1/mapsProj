@@ -3,8 +3,9 @@ import HomeScreen from "./components/home/home.screen";
 import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import DetailsScreen from "./components/home/DetailsScreen";
+import AdminScreen from "./components/home/admin.screen";
 import EventsScreen from "./components/home/EventsScreen";
+import MapScreen from "./components/map/map.screen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -38,10 +39,10 @@ export default function App() {
           //  {(props) => <HomeScreen {...props} extraData={someData} />}  PASSING OTHER PROPS
         />
         <Stack.Screen
-          name="Details"
-          component={DetailsScreen}
+          name="Admin"
+          component={AdminScreen}
           options={{
-            title: "Details",
+            title: "Admin",
           }}
         />
         <Stack.Screen
@@ -49,6 +50,13 @@ export default function App() {
           component={EventsScreen}
           options={{
             title: "Events",
+          }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={MapScreen}
+          options={{
+            title: "Map",
           }}
         />
       </Stack.Navigator>

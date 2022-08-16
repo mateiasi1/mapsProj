@@ -29,6 +29,11 @@ const events = [
     ],
   },
   { id: 2, title: "Car", icon: faCar, color: "black" },
+  { id: 3, title: "Car1", icon: faCar, color: "black" },
+  { id: 3, title: "Car1", icon: faCar, color: "black" },
+  { id: 3, title: "Car1", icon: faCar, color: "black" },
+  { id: 3, title: "Car1", icon: faCar, color: "black" },
+  { id: 3, title: "Car1", icon: faCar, color: "black" },
 ] as Event[];
 const EventsScreen = ({ navigation }) => {
   const [selectedEvent, setSelectedEvent] = useState<Event>(null);
@@ -55,7 +60,15 @@ const EventsScreen = ({ navigation }) => {
       {!showSubEvents && (
         <View style={styles.rootOptionsContent}>
           {events.map((event) => (
-            <View key={event.id}>
+            <View
+              key={event.id}
+              style={{
+                width: "30%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <TouchableOpacity
                 style={styles.iconBorder}
                 onPress={() => handleSelectEvent(event)}
@@ -63,9 +76,9 @@ const EventsScreen = ({ navigation }) => {
                 <FontAwesomeIcon
                   icon={event.icon}
                   color={event.color}
-                  size={30}
+                  size={25}
                   style={{
-                    padding: 25,
+                    padding: 20,
                   }}
                 />
                 {/* <Text
@@ -102,16 +115,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderColor: "blue",
-    borderRadius: 50,
+    borderRadius: 40,
     borderWidth: 2,
-    height: 80,
+    height: 70,
     padding: 13,
   },
 
   rootOptionsContent: {
     display: "flex",
-    flexDirection: "row",
     justifyContent: "space-between",
+    padding: 20,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
 export default EventsScreen;
