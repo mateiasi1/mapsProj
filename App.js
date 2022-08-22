@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AdminScreen from "./components/home/admin.screen";
 import EventsScreen from "./components/home/EventsScreen";
 import MapScreen from "./components/map/map.screen";
+import AdminEvent from "./components/adminEvent/admin.event.screen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -57,6 +58,13 @@ export default function App() {
           component={MapScreen}
           options={{
             title: "Map",
+          }}
+        />
+        <Stack.Screen
+          name="AdminEvent"
+          component={AdminEvent}
+          options={{
+            title: "Admin Event",
           }}
         />
       </Stack.Navigator>

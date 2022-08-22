@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, ScrollView, Text, View, StyleSheet } from "react-native";
+import {
+  Button,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { DataTable, TextInput } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import EventDTO from "../../models/EventDto";
@@ -22,7 +29,11 @@ const AdminScreen = ({ navigation }) => {
   useEffect(() => {
     setPage(0);
   }, [itemsPerPage]);
-
+  const onEventSelect = (event: EventDTO) => {
+    navigation.navigate("AdminEvent", {
+      event: event,
+    });
+  };
   return (
     <View>
       <View style={styles.container}>
@@ -42,38 +53,45 @@ const AdminScreen = ({ navigation }) => {
             <DataTable.Title style={styles.row}>Icon</DataTable.Title>
           </DataTable.Header>
           {events.map((event) => (
-            <DataTable.Row>
-              <DataTable.Cell>{event.title}</DataTable.Cell>
-              <DataTable.Cell numeric>{event.location.latitude}</DataTable.Cell>
-              <DataTable.Cell numeric>
-                {event.location.longitude}
-              </DataTable.Cell>
+            <TouchableOpacity
+              key={event.id}
+              onPress={() => onEventSelect(event)}
+            >
+              <DataTable.Row>
+                <DataTable.Cell>{event.title}</DataTable.Cell>
+                <DataTable.Cell numeric>
+                  {event.location.latitude}
+                </DataTable.Cell>
+                <DataTable.Cell numeric>
+                  {event.location.longitude}
+                </DataTable.Cell>
 
-              <DataTable.Cell numeric>{event.priority}</DataTable.Cell>
-              <DataTable.Cell>
-                <FontAwesomeIcon
-                  icon={event.icon}
-                  color={event.color}
-                  size={30}
-                  style={{
-                    padding: 25,
-                    width: "20%",
-                  }}
-                />
-              </DataTable.Cell>
-              <DataTable.Cell>
-                {" "}
-                <FontAwesomeIcon
-                  icon={event.subEvent.icon}
-                  color={event.subEvent.color}
-                  size={30}
-                  style={{
-                    padding: 25,
-                    width: "20%",
-                  }}
-                />
-              </DataTable.Cell>
-            </DataTable.Row>
+                <DataTable.Cell numeric>{event.priority}</DataTable.Cell>
+                <DataTable.Cell>
+                  <FontAwesomeIcon
+                    icon={event.icon}
+                    color={event.color}
+                    size={30}
+                    style={{
+                      padding: 25,
+                      width: "20%",
+                    }}
+                  />
+                </DataTable.Cell>
+                <DataTable.Cell>
+                  {" "}
+                  <FontAwesomeIcon
+                    icon={event.subEvent.icon}
+                    color={event.subEvent.color}
+                    size={30}
+                    style={{
+                      padding: 25,
+                      width: "20%",
+                    }}
+                  />
+                </DataTable.Cell>
+              </DataTable.Row>
+            </TouchableOpacity>
           ))}
           <DataTable.Pagination
             page={page}
@@ -116,8 +134,8 @@ const events = [
     },
     location: {
       id: 1,
-      latitude: 0,
-      longitude: 0,
+      latitude: 44.32751537449618,
+      longitude: 23.800023458898067,
     },
     priority: EventPriority.Low,
   },
