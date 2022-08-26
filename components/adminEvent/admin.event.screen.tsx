@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, SafeAreaView, ScrollView } from "react-native";
+import { Button, Pressable, SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
@@ -20,7 +20,8 @@ type Prop = {
 const AdminEvent = ({ navigation, route }) => {
   const [placeId, setPlaceId] = useState("");
   const { event } = route.params;
-  const mode = "WALKING";
+  const [mode, setMode] = useState("DRIVING");
+
   const [markers, setMarkers] = useState<Prop[]>([
     {
       id: event.id || null,
@@ -88,6 +89,10 @@ const AdminEvent = ({ navigation, route }) => {
       return;
     }
     setMarkers([...markers, obj]);
+  };
+
+  const onPress = (mode: string) => {
+    setMode(mode);
   };
   const showDialog = () => setVisible(true);
 
@@ -165,7 +170,7 @@ const AdminEvent = ({ navigation, route }) => {
           origin={origin}
           destination={destination}
           apikey={apiKey}
-          mode={mode}
+          mode={mode || "DRIVING"}
           strokeWidth={10}
           strokeColor="blue"
           onStart={(params) => {
@@ -178,19 +183,26 @@ const AdminEvent = ({ navigation, route }) => {
 
       {/* <EventPickerDialog visible={visible} hideDialog={hideDialog} /> */}
       <View style={styles.bottomBar}>
-        <FontAwesomeIcon
-          icon={faPersonWalking}
-          color={event.color}
-          size={30}
-          style={styles.button}
-        />
+        <Pressable style={styles.button} onPress={() => onPress("WALKING")}>
+          <FontAwesomeIcon
+            icon={faPersonWalking}
+            color={event.color}
+            size={30}
+            style={styles.button}
+          />
+          <Text>WALKING</Text>
+        </Pressable>
+
         <View style={styles.verticleLine}></View>
-        <FontAwesomeIcon
-          icon={faCar}
-          color={event.color}
-          size={30}
-          style={styles.button}
-        />
+        <Pressable style={styles.button} onPress={() => onPress("DRIVING")}>
+          <FontAwesomeIcon
+            icon={faCar}
+            color={event.color}
+            size={30}
+            style={styles.button}
+          />
+          <Text>DRIVING</Text>
+        </Pressable>
       </View>
       {/* <FAB
         icon="fa-solid fa-person-walking"
@@ -220,7 +232,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     margin: 16,
   },
-  button: {},
+  button: { display: "flex", flexDirection: "row" },
   bottomBar: {
     backgroundColor: "white",
     color: "white",
@@ -230,8 +242,7 @@ const styles = StyleSheet.create({
     margin: 0,
     width: "100%",
     height: "10%",
-    display: "flex",
-    flexDirection: "row",
+
     justifyContent: "space-around",
     padding: "5%",
   },
