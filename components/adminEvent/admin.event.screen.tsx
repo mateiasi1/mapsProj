@@ -3,23 +3,24 @@ import { Button, SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
-
+import { faCar, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
 import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 import EventDTO from "../../models/EventDto";
+import MapViewDirections from "react-native-maps-directions";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import HomeScreen from "../home/home.screen";
 
 type Prop = {
   id: number;
   latitude: number;
   longitude: number;
 };
-const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
-
 const AdminEvent = ({ navigation, route }) => {
   const [placeId, setPlaceId] = useState("");
   const { event } = route.params;
-
+  const mode = "WALKING";
   const [markers, setMarkers] = useState<Prop[]>([
     {
       id: event.id || null,
@@ -27,6 +28,12 @@ const AdminEvent = ({ navigation, route }) => {
       longitude: event.location.longitude || null,
     },
   ]);
+  const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
+  const origin = { latitude: 44.32751537449618, longitude: 23.800023458898067 };
+  const destination = {
+    latitude: 44.326266,
+    longitude: 23.79852,
+  };
 
   useEffect(() => {
     debugger;
@@ -154,14 +161,42 @@ const AdminEvent = ({ navigation, route }) => {
               ></Marker>
             )
         )}
+        <MapViewDirections
+          origin={origin}
+          destination={destination}
+          apikey={apiKey}
+          mode={mode}
+          strokeWidth={10}
+          strokeColor="blue"
+          onStart={(params) => {
+            console.log(
+              `Started routing between "${origin}" and "${destination}"`
+            );
+          }}
+        />
       </MapView>
 
       {/* <EventPickerDialog visible={visible} hideDialog={hideDialog} /> */}
-      <FAB
-        icon="plus"
+      <View style={styles.bottomBar}>
+        <FontAwesomeIcon
+          icon={faPersonWalking}
+          color={event.color}
+          size={30}
+          style={styles.button}
+        />
+        <View style={styles.verticleLine}></View>
+        <FontAwesomeIcon
+          icon={faCar}
+          color={event.color}
+          size={30}
+          style={styles.button}
+        />
+      </View>
+      {/* <FAB
+        icon="fa-solid fa-person-walking"
         style={styles.fab}
         onPress={() => navigation.navigate("Events")}
-      />
+      /> */}
     </SafeAreaView>
   );
 };
@@ -185,12 +220,32 @@ const styles = StyleSheet.create({
     bottom: 0,
     margin: 16,
   },
+  button: {},
+  bottomBar: {
+    backgroundColor: "white",
+    color: "white",
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    margin: 0,
+    width: "100%",
+    height: "10%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: "5%",
+  },
   search: {
     position: "absolute",
     right: 0,
     top: 0,
     width: Dimensions.get("window").width,
     zIndex: 1,
+  },
+  verticleLine: {
+    height: "100%",
+    width: 1,
+    backgroundColor: "#909090",
   },
 });
 export default AdminEvent;
