@@ -7,7 +7,7 @@ import AdminScreen from "./components/home/admin.screen";
 import EventsScreen from "./components/home/EventsScreen";
 import MapScreen from "./components/map/map.screen";
 import AdminEvent from "./components/adminEvent/admin.event.screen";
-
+import AccessNotGranted from "./components/localization/accessNotGranted";
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -44,6 +44,13 @@ export default function App() {
           component={AdminScreen}
           options={{
             title: "Admin",
+          }}
+        />
+        <Stack.Screen
+          name="AccessNotGranted"
+          component={AccessNotGranted}
+          options={{
+            title: "AccessNotGranted",
           }}
         />
         <Stack.Screen
