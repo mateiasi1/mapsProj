@@ -11,6 +11,7 @@ import { StyleSheet, View, Dimensions } from "react-native";
 
 import * as Location from "expo-location";
 import AccessNotGranted from "../localization/accessNotGranted";
+import MapScreen from "../map/map.screen";
 
 type Prop = {
     id: string;
