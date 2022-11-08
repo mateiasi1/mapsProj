@@ -66,26 +66,14 @@ const MapScreen = ({ navigation }) => {
             setVisible(false);
             return;
         }
-        console.log(
-            "currentLocation.latitude: " +
-                currentLocation.latitude +
-                "  " +
-                "currentLocation.latitude + 10: " +
-                (currentLocation.latitude + 0.001) +
-                "  " +
-                "event.nativeEvent.coordinate.latitude: " +
-                event.nativeEvent.coordinate.latitude
-        );
         if (
             event.nativeEvent.coordinate.latitude >
-            currentLocation.latitude + 0.0002
+                currentLocation.latitude + 0.0002 ||
+            event.nativeEvent.coordinate.longitude ===
+                currentLocation.longitude + 0.002
         ) {
             alert("The event is too far away from you!");
-        } else if (
-            event.nativeEvent.coordinate.longitude ===
-            currentLocation.longitude + 0.001
-        ) {
-            alert("The event is too far away from you! because of longitude");
+            return;
         }
 
         const obj = {
