@@ -93,6 +93,10 @@ const MapScreen = ({ navigation }) => {
             return;
         }
         setMarkers([...markers, obj]);
+        navigation.navigate("Events", {
+            itemId: obj.id,
+            otherParam: "anything you want here",
+        });
     };
     const showDialog = () => setVisible(true);
 
