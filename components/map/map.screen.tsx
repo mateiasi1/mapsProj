@@ -15,14 +15,14 @@ type Prop = {
 };
 const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({ route, navigation }) => {
     const [placeId, setPlaceId] = useState("");
     //GET this from the context when the home will save it there
     const currentLocation = {
-        id: 68.12760936383249,
+        id: "68.12760936383249",
         latitude: 44.32734148863794,
         longitude: 23.80026787519455,
-    };
+    } as Prop;
     const [markers, setMarkers] = useState<Prop[]>([
         {
             id: null,
@@ -98,9 +98,41 @@ const MapScreen = ({ navigation }) => {
             otherParam: "anything you want here",
         });
     };
+    const onFabPress = () => {
+        if (visible === true) {
+            setVisible(false);
+            return;
+        }
+
+        if (markers.some((item) => item.id === currentLocation.id.toString())) {
+            console.log("item" + currentLocation.id);
+            console.log(markers);
+            setMarkers(
+                markers.filter(
+                    (item) => item.id !== currentLocation.id.toString()
+                )
+            );
+
+            return;
+        }
+        setMarkers([...markers, currentLocation]);
+        navigation.navigate("Events", {
+            itemId: currentLocation.id,
+            otherParam: "anything you want here",
+        });
+    };
     const showDialog = () => setVisible(true);
 
     const hideDialog = () => setVisible(false);
+
+    useEffect(() => {
+        if (route.params?.post) {
+            console.log(route.params?.post);
+            var index = markers.indexOf(route.params?.post);
+            markers.splice(index, 1);
+            setMarkers([...markers]);
+        }
+    }, [route.params?.post]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -176,7 +208,13 @@ const MapScreen = ({ navigation }) => {
             <FAB
                 icon="plus"
                 style={styles.fab}
-                onPress={() => navigation.navigate("Events")}
+                onPress={() => (
+                    navigation.navigate("Events", {
+                        itemId: currentLocation.id,
+                        otherParam: "anything you want here",
+                    }),
+                    onFabPress()
+                )}
             />
         </SafeAreaView>
     );

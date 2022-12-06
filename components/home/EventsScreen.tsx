@@ -11,7 +11,13 @@ import { Button, Paragraph } from "react-native-paper";
 import {
     faCar,
     faCarCrash,
+    faCircle,
+    faLightbulb,
     faLock,
+    faRoad,
+    faRoadCircleExclamation,
+    faTrafficLight,
+    faTriangleExclamation,
     IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import SubEvents from "./SubEvents";
@@ -21,8 +27,62 @@ import Event from "../../models/Event";
 const events = [
     {
         id: 1,
-        title: "Car crash",
-        icon: faCarCrash,
+        title: "Pericol",
+        icon: faTriangleExclamation,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Pe drum",
+                icon: faRoad,
+                color: "black",
+                subEventTypes: [
+                    {
+                        id: 1,
+                        title: "Groapa periculoasa",
+                        icon: faCircle,
+                        color: "black",
+                    },
+                    {
+                        id: 2,
+                        title: "Semafor nefunctional",
+                        icon: faTrafficLight,
+                        color: "black",
+                    },
+                    {
+                        id: 3,
+                        title: "Bec ars",
+                        icon: faLightbulb,
+                        color: "black",
+                    },
+                ],
+            },
+            {
+                id: 2,
+                title: "Pe acostament",
+                icon: faRoadCircleExclamation,
+                color: "black",
+                subEventTypes: [
+                    {
+                        id: 1,
+                        title: "Indicator lipsa",
+                        icon: faTriangleExclamation,
+                        color: "black",
+                    },
+                ],
+            },
+            {
+                id: 3,
+                title: "Inca ceva",
+                icon: faLightbulb,
+                color: "black",
+            },
+        ],
+    },
+    {
+        id: 2,
+        title: "Car",
+        icon: faCar,
         color: "black",
         subEvents: [
             {
@@ -34,25 +94,102 @@ const events = [
             { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
         ],
     },
-    { id: 2, title: "Car", icon: faCar, color: "black" },
-    { id: 3, title: "Car1", icon: faCar, color: "black" },
-    { id: 4, title: "Car1", icon: faCar, color: "black" },
-    { id: 5, title: "Car1", icon: faCar, color: "black" },
-    { id: 6, title: "Car1", icon: faCar, color: "black" },
-    { id: 7, title: "Car1", icon: faCar, color: "black" },
+    {
+        id: 3,
+        title: "Car1",
+        icon: faCar,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Sub event 1",
+                icon: faCarCrash,
+                color: "black",
+            },
+            { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
+        ],
+    },
+    {
+        id: 4,
+        title: "Car1",
+        icon: faCar,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Sub event 1",
+                icon: faCarCrash,
+                color: "black",
+            },
+            { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
+        ],
+    },
+    {
+        id: 5,
+        title: "Car1",
+        icon: faCar,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Sub event 1",
+                icon: faCarCrash,
+                color: "black",
+            },
+            { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
+        ],
+    },
+    {
+        id: 6,
+        title: "Car1",
+        icon: faCar,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Sub event 1",
+                icon: faCarCrash,
+                color: "black",
+            },
+            { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
+        ],
+    },
+    {
+        id: 7,
+        title: "Car1",
+        icon: faCar,
+        color: "black",
+        subEvents: [
+            {
+                id: 1,
+                title: "Sub event 1",
+                icon: faCarCrash,
+                color: "black",
+            },
+            { id: 2, title: "Sub event 2", icon: faCar, color: "black" },
+        ],
+    },
 ] as Event[];
 const EventsScreen = ({ route, navigation }) => {
     const [selectedEvent, setSelectedEvent] = useState<Event>(null);
     const [showSubEvents, setShowSubEvents] = useState<boolean>(false);
     const [selectedSubEvent, setSelectedSubEvent] = useState<SubEvent>(null);
 
+    const [count, setCount] = React.useState(0);
+
+    React.useEffect(() => {
+        console.log(navigation.setOptions({ canGoBack: false }));
+        navigation.canGoBack = false;
+        console.log(navigation.canGoBack);
+    }, [navigation]);
+    const handleShowSubEvents = () => {
+        setShowSubEvents(!showSubEvents);
+    };
     const handleSelectEvent = (event: Event) => {
         setSelectedEvent(event);
         handleShowSubEvents();
     };
-    const handleShowSubEvents = () => {
-        setShowSubEvents(!showSubEvents);
-    };
+
     const handleSelectedSubEvent = (subEvent: SubEvent) => {
         if (selectedSubEvent === subEvent) {
             setSelectedSubEvent(null);
@@ -63,10 +200,11 @@ const EventsScreen = ({ route, navigation }) => {
     };
 
     const onPress = () => {
-        navigation.goBack();
+        navigation.navigate("Map", { post: itemId });
     };
 
     const { itemId, otherParam } = route.params;
+
     return (
         <View
             style={{
@@ -76,8 +214,9 @@ const EventsScreen = ({ route, navigation }) => {
                 height: "95%",
             }}
         >
-            <Text>itemId: {JSON.stringify(itemId)}</Text>
-            <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+            {/* <Text>itemId: {JSON.stringify(itemId)}</Text>
+            <Text>otherParam: {JSON.stringify(otherParam)}</Text> */}
+
             {!showSubEvents && (
                 <View style={styles.rootOptionsContent}>
                     {events.map((event) => (
