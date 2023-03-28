@@ -7,6 +7,7 @@ import { FAB } from "react-native-paper";
 import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
+import calculateDistance from "../helpers/calculateDistance";
 
 type Prop = {
     id: string;
@@ -20,8 +21,8 @@ const MapScreen = ({ route, navigation }) => {
     //GET this from the context when the home will save it there
     const currentLocation = {
         id: "68.12760936383249",
-        latitude: 44.32734148863794,
-        longitude: 23.80026787519455,
+        latitude: 44.32970461331131,
+        longitude: 23.77482209354639,
     } as Prop;
     const [markers, setMarkers] = useState<Prop[]>([
         {
@@ -59,10 +60,12 @@ const MapScreen = ({ route, navigation }) => {
             return;
         }
         if (
-            event.nativeEvent.coordinate.latitude >
-                currentLocation.latitude + 0.003 ||
-            event.nativeEvent.coordinate.longitude >
-                currentLocation.longitude + 0.005
+            calculateDistance(
+                currentLocation.latitude,
+                currentLocation.longitude,
+                event.nativeEvent.coordinate.latitude,
+                event.nativeEvent.coordinate.longitude
+            )
         ) {
             alert("The event is too far away from you!");
             return;
@@ -122,33 +125,6 @@ const MapScreen = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.search}>
-                {/* <Button
-          title="Go to Details"
-          onPress={() => navigation.navigate("Details")}
-        /> */}
-                <View
-                    style={{
-                        marginTop: "5%",
-                        width: "100%",
-                        display: "flex",
-                    }}
-                >
-                    <GooglePlacesAutocomplete
-                        placeholder="Search"
-                        onPress={(data, details = null) => {
-                            // 'details' is provided when fetchDetails = true
-
-                            setPlaceId(data.place_id);
-                        }}
-                        fetchDetails
-                        query={{
-                            key: apiKey,
-                            language: "en",
-                        }}
-                    />
-                </View>
-            </View>
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
@@ -208,7 +184,7 @@ const styles = StyleSheet.create({
     map: {
         width: Dimensions.get("window").width,
         // height: "30%",
-        top: 100,
+
         height: Dimensions.get("window").height,
     },
     fab: {
