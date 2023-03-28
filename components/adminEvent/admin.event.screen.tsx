@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Pressable, SafeAreaView, ScrollView } from "react-native";
+import { Linking, Platform, Pressable, SafeAreaView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { FAB } from "react-native-paper";
-import { faCar, faPersonWalking } from "@fortawesome/free-solid-svg-icons";
-import Event from "../../models/Event";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { faCar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import EventDTO from "../../models/EventDto";
-import MapViewDirections from "react-native-maps-directions";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import HomeScreen from "../home/home.screen";
 
 type Prop = {
     id: number;
@@ -18,10 +12,9 @@ type Prop = {
     longitude: number;
 };
 const AdminEvent = ({ navigation, route }) => {
-    const [placeId, setPlaceId] = useState("");
+    const [placeId] = useState("");
     const { event } = route.params;
-    const [mode, setMode] = useState("DRIVING");
-
+    const [visible, setVisible] = useState(false);
     const [markers, setMarkers] = useState<Prop[]>([
         {
             id: event.id || null,
@@ -29,30 +22,14 @@ const AdminEvent = ({ navigation, route }) => {
             longitude: event.location.longitude || null,
         },
     ]);
-    const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
-    const origin = {
-        latitude: 44.32751537449618,
-        longitude: 23.800023458898067,
-    };
-    const destination = {
-        latitude: 44.326266,
-        longitude: 23.79852,
-    };
+    const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
 
     useEffect(() => {
-        debugger;
         axios
             .get(
                 `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`
             )
             .then((res) => {
-                // console.log(res.data);
-                console.log(
-                    "lat:" +
-                        res.data.result.geometry.location.lat +
-                        " long: " +
-                        res.data.result.geometry.location.lng
-                );
                 setMarkers([
                     ...markers,
                     {
@@ -69,7 +46,6 @@ const AdminEvent = ({ navigation, route }) => {
             });
     }, [placeId]);
 
-    const [visible, setVisible] = useState(false);
     const onMapPress = (event) => {
         if (visible === true) {
             setVisible(false);
@@ -82,11 +58,8 @@ const AdminEvent = ({ navigation, route }) => {
             latitude: event.nativeEvent.coordinate.latitude,
             longitude: event.nativeEvent.coordinate.longitude,
         } as Prop;
-        debugger;
 
         if (markers.some((item) => item.id === obj.id)) {
-            console.log("item" + obj.id);
-            console.log(markers);
             setMarkers(markers.filter((item) => item.id !== obj.id));
 
             return;
@@ -94,42 +67,14 @@ const AdminEvent = ({ navigation, route }) => {
         setMarkers([...markers, obj]);
     };
 
-    const onPress = (mode: string) => {
-        setMode(mode);
+    const onPress = () => {
+        var scheme = Platform.OS === "ios" ? "maps:0,0?q=" : "geo:0,0?q=";
+        var url = scheme + `${markers[0].latitude}+${markers[0].longitude}`;
+        Linking.openURL(url);
     };
-    const showDialog = () => setVisible(true);
-
-    const hideDialog = () => setVisible(false);
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.search}>
-                {/* <Button
-          title="Go to Details"
-          onPress={() => navigation.navigate("Details")}
-        /> */}
-                <View
-                    style={{
-                        marginTop: "5%",
-                        width: "100%",
-                        display: "flex",
-                    }}
-                >
-                    <GooglePlacesAutocomplete
-                        placeholder="Search"
-                        onPress={(data, details = null) => {
-                            // 'details' is provided when fetchDetails = true
-                            console.log(data.place_id);
-                            setPlaceId(data.place_id);
-                        }}
-                        fetchDetails
-                        query={{
-                            key: apiKey,
-                            language: "en",
-                        }}
-                    />
-                </View>
-            </View>
             <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
@@ -159,65 +104,23 @@ const AdminEvent = ({ navigation, route }) => {
                                     longitude: marker.longitude,
                                 }}
                                 tracksViewChanges={true}
-                                // onDragEnd={(e) =>
-                                //   setMarkers({
-                                //     id: e.nativeEvent.coordinate.latitude,
-                                //     latitude: e.nativeEvent.coordinate.latitude,
-                                //     longitude: e.nativeEvent.coordinate.longitude,
-                                //   })
-                                // }
                             ></Marker>
                         )
                 )}
-                <MapViewDirections
-                    origin={origin}
-                    destination={destination}
-                    apikey={apiKey}
-                    mode={mode || "DRIVING"}
-                    strokeWidth={10}
-                    strokeColor="blue"
-                    onStart={(params) => {
-                        console.log(
-                            `Started routing between "${origin}" and "${destination}"`
-                        );
-                    }}
-                />
             </MapView>
 
             {/* <EventPickerDialog visible={visible} hideDialog={hideDialog} /> */}
             <View style={styles.bottomBar}>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => onPress("WALKING")}
-                >
-                    <FontAwesomeIcon
-                        icon={faPersonWalking}
-                        color={event.color}
-                        size={30}
-                        style={styles.button}
-                    />
-                    <Text>WALKING</Text>
-                </Pressable>
-
-                <View style={styles.verticleLine}></View>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => onPress("DRIVING")}
-                >
+                <Pressable style={styles.button} onPress={() => onPress()}>
                     <FontAwesomeIcon
                         icon={faCar}
                         color={event.color}
                         size={30}
                         style={styles.button}
                     />
-                    <Text>DRIVING</Text>
+                    <Text>Go there</Text>
                 </Pressable>
             </View>
-            {/* <FAB
-        icon="fa-solid fa-person-walking"
-        style={styles.fab}
-        onPress={() => navigation.navigate("Events")}
-      /> */}
         </SafeAreaView>
     );
 };
@@ -232,7 +135,7 @@ const styles = StyleSheet.create({
     map: {
         width: Dimensions.get("window").width,
         // height: "30%",
-        top: 100,
+        // top: 100,
         height: Dimensions.get("window").height,
     },
     fab: {

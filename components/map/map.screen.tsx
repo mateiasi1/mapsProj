@@ -13,7 +13,7 @@ type Prop = {
     latitude: number;
     longitude: number;
 };
-const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
+const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
 
 const MapScreen = ({ route, navigation }) => {
     const [placeId, setPlaceId] = useState("");
@@ -31,19 +31,11 @@ const MapScreen = ({ route, navigation }) => {
         },
     ]);
     useEffect(() => {
-        debugger;
         axios
             .get(
                 `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`
             )
             .then((res) => {
-                // console.log(res.data);
-                console.log(
-                    "lat:" +
-                        res.data.result.geometry.location.lat +
-                        " long: " +
-                        res.data.result.geometry.location.lng
-                );
                 setMarkers([
                     ...markers,
                     {
@@ -68,9 +60,9 @@ const MapScreen = ({ route, navigation }) => {
         }
         if (
             event.nativeEvent.coordinate.latitude >
-                currentLocation.latitude + 0.0002 ||
-            event.nativeEvent.coordinate.longitude ===
-                currentLocation.longitude + 0.002
+                currentLocation.latitude + 0.003 ||
+            event.nativeEvent.coordinate.longitude >
+                currentLocation.longitude + 0.005
         ) {
             alert("The event is too far away from you!");
             return;
@@ -83,11 +75,8 @@ const MapScreen = ({ route, navigation }) => {
             latitude: event.nativeEvent.coordinate.latitude,
             longitude: event.nativeEvent.coordinate.longitude,
         } as Prop;
-        debugger;
 
         if (markers.some((item) => item.id === obj.id)) {
-            console.log("item" + obj.id);
-            console.log(markers);
             setMarkers(markers.filter((item) => item.id !== obj.id));
 
             return;
@@ -105,8 +94,6 @@ const MapScreen = ({ route, navigation }) => {
         }
 
         if (markers.some((item) => item.id === currentLocation.id.toString())) {
-            console.log("item" + currentLocation.id);
-            console.log(markers);
             setMarkers(
                 markers.filter(
                     (item) => item.id !== currentLocation.id.toString()
@@ -127,7 +114,6 @@ const MapScreen = ({ route, navigation }) => {
 
     useEffect(() => {
         if (route.params?.post) {
-            console.log(route.params?.post);
             var index = markers.indexOf(route.params?.post);
             markers.splice(index, 1);
             setMarkers([...markers]);
@@ -152,7 +138,7 @@ const MapScreen = ({ route, navigation }) => {
                         placeholder="Search"
                         onPress={(data, details = null) => {
                             // 'details' is provided when fetchDetails = true
-                            console.log(data.place_id);
+
                             setPlaceId(data.place_id);
                         }}
                         fetchDetails
@@ -192,19 +178,11 @@ const MapScreen = ({ route, navigation }) => {
                                     longitude: marker.longitude,
                                 }}
                                 tracksViewChanges={true}
-                                // onDragEnd={(e) =>
-                                //   setMarkers({
-                                //     id: e.nativeEvent.coordinate.latitude,
-                                //     latitude: e.nativeEvent.coordinate.latitude,
-                                //     longitude: e.nativeEvent.coordinate.longitude,
-                                //   })
-                                // }
                             ></Marker>
                         )
                 )}
             </MapView>
 
-            {/* <EventPickerDialog visible={visible} hideDialog={hideDialog} /> */}
             <FAB
                 icon="plus"
                 style={styles.fab}

@@ -10,7 +10,6 @@ type Props = {
 };
 
 const SubEventType: FC<Props> = ({ subEvent }) => {
-    debugger;
     const [text, setText] = useState("");
     return (
         <View style={styles.root}>

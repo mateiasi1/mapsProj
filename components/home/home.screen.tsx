@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-    Button,
-    Linking,
-    PermissionsAndroid,
-    Platform,
-    SafeAreaView,
-    Text,
-} from "react-native";
+import { Button, SafeAreaView, Text } from "react-native";
 import { StyleSheet, View, Dimensions } from "react-native";
 
 import * as Location from "expo-location";
 import AccessNotGranted from "../localization/accessNotGranted";
-import MapScreen from "../map/map.screen";
 
 type Prop = {
     id: string;
     latitude: number;
     longitude: number;
 };
-const apiKey = "AIzaSyBfEiIdG9ePXO1ZUIybpauYfNvfgP358B8";
+const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
 
 const HomeScreen = ({ navigation }) => {
     const [placeId, setPlaceId] = useState("");
@@ -39,23 +31,24 @@ const HomeScreen = ({ navigation }) => {
             var internalStatus =
                 await Location.requestForegroundPermissionsAsync();
             setStatus(await Location.requestForegroundPermissionsAsync());
-            debugger;
+
             if (internalStatus.status !== "granted") {
                 setErrorMsg("Permission to access location was denied");
                 return;
             }
-            debugger;
+
             let location = await Location.getCurrentPositionAsync({});
+
             setLocation(location);
         })();
-    }, [status]);
+    }, []);
 
-    let text = "Waiting..";
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
-    }
+    // let text = "Waiting..";
+    // if (errorMsg) {
+    //     text = errorMsg;
+    // } else if (location) {
+    //     text = JSON.stringify(location);
+    // }
 
     const [visible, setVisible] = useState(false);
     const onMapPress = (event) => {
@@ -70,11 +63,8 @@ const HomeScreen = ({ navigation }) => {
             latitude: event.nativeEvent.coordinate.latitude,
             longitude: event.nativeEvent.coordinate.longitude,
         } as Prop;
-        debugger;
 
         if (markers.some((item) => item.id === obj.id)) {
-            console.log("item" + obj.id);
-            console.log(markers);
             setMarkers(markers.filter((item) => item.id !== obj.id));
 
             return;
@@ -89,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             {location ? (
                 <View style={styles.search}>
-                    <Text>{text}</Text>
+                    {/* <Text>{text}</Text> */}
                     <Button
                         title="Admin"
                         onPress={() => navigation.navigate("Admin")}

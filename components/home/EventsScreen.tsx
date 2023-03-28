@@ -178,9 +178,7 @@ const EventsScreen = ({ route, navigation }) => {
     const [count, setCount] = React.useState(0);
 
     React.useEffect(() => {
-        console.log(navigation.setOptions({ canGoBack: false }));
         navigation.canGoBack = false;
-        console.log(navigation.canGoBack);
     }, [navigation]);
     const handleShowSubEvents = () => {
         setShowSubEvents(!showSubEvents);
