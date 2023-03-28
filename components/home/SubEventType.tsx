@@ -11,6 +11,7 @@ type Props = {
 
 const SubEventType: FC<Props> = ({ subEvent }) => {
     const [text, setText] = useState("");
+    const [selectedSubEventType, setSelectedSubEventType] = useState<number>();
     return (
         <View style={styles.root}>
             <View style={styles.iconsView}>
@@ -18,9 +19,19 @@ const SubEventType: FC<Props> = ({ subEvent }) => {
                     subEvent !== null &&
                     subEvent !== undefined &&
                     subEvent.subEventTypes.map((subEventType) => (
-                        <View style={styles.itemView}>
+                        <View
+                            style={[
+                                styles.itemView,
+                                selectedSubEventType === subEventType.id &&
+                                    styles.selectedSubEventType,
+                            ]}
+                            key={subEventType.id}
+                        >
                             <TouchableOpacity
-                            // onPress={() => onSelectSubEvent(subEvent)}
+                                onPress={() =>
+                                    setSelectedSubEventType(subEventType.id)
+                                }
+                                // onPress={() => onSelectSubEvent(subEvent)}
                             >
                                 <FontAwesomeIcon
                                     icon={subEventType.icon}
@@ -72,12 +83,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
         width: 100,
+        height: 110,
+        padding: 5,
     },
     eventTitle: {
         maxWidth: 100,
         textAlign: "center",
     },
+    selectedSubEventType: {
+        borderWidth: 2,
+        borderColor: "#f4511e",
 
+        borderRadius: 10,
+    },
     hideZone: {
         display: "none",
     },

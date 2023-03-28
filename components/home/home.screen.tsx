@@ -10,10 +10,8 @@ type Prop = {
     latitude: number;
     longitude: number;
 };
-const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
 
 const HomeScreen = ({ navigation }) => {
-    const [placeId, setPlaceId] = useState("");
     const [markers, setMarkers] = useState<Prop[]>([
         {
             id: null,
@@ -43,43 +41,10 @@ const HomeScreen = ({ navigation }) => {
         })();
     }, []);
 
-    // let text = "Waiting..";
-    // if (errorMsg) {
-    //     text = errorMsg;
-    // } else if (location) {
-    //     text = JSON.stringify(location);
-    // }
-
-    const [visible, setVisible] = useState(false);
-    const onMapPress = (event) => {
-        if (visible === true) {
-            setVisible(false);
-            return;
-        }
-        const obj = {
-            id:
-                event.nativeEvent.coordinate.latitude +
-                event.nativeEvent.coordinate.longitude,
-            latitude: event.nativeEvent.coordinate.latitude,
-            longitude: event.nativeEvent.coordinate.longitude,
-        } as Prop;
-
-        if (markers.some((item) => item.id === obj.id)) {
-            setMarkers(markers.filter((item) => item.id !== obj.id));
-
-            return;
-        }
-        setMarkers([...markers, obj]);
-    };
-    const showDialog = () => setVisible(true);
-
-    const hideDialog = () => setVisible(false);
-
     return (
         <SafeAreaView style={styles.container}>
             {location ? (
                 <View style={styles.search}>
-                    {/* <Text>{text}</Text> */}
                     <Button
                         title="Admin"
                         onPress={() => navigation.navigate("Admin")}
