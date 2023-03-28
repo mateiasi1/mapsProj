@@ -161,6 +161,7 @@ const MapScreen = ({ route, navigation }) => {
 
             <FAB
                 icon="plus"
+                color="#fff"
                 style={styles.fab}
                 onPress={() => (
                     navigation.navigate("Events", {
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         margin: 16,
+        backgroundColor: "#f4511e",
     },
     search: {
         position: "absolute",

@@ -27,7 +27,7 @@ export default function App() {
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        title: "My home",
+                        title: "Home",
                         headerRight: () => (
                             <Button
                                 onPress={() => alert("This is a button!")}

@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     selectedSubEventType: {
         borderWidth: 2,
         borderColor: "#f4511e",
-
         borderRadius: 10,
     },
     hideZone: {
