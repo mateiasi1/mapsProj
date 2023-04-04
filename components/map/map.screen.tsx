@@ -130,8 +130,8 @@ const MapScreen = ({ route, navigation }) => {
                 provider={PROVIDER_GOOGLE}
                 showsUserLocation={true}
                 initialRegion={{
-                    latitude: 44.32724051468231,
-                    longitude: 23.800531066954136,
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
                     latitudeDelta: 0.09,
                     longitudeDelta: 0.04,
                 }}

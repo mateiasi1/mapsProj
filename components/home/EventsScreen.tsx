@@ -20,9 +20,9 @@ import {
     faTriangleExclamation,
     IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
-import SubEvents from "./SubEvents";
 import SubEvent from "../../models/SubEvent";
 import Event from "../../models/Event";
+import SubEvents from "../map/SubEvents";
 
 const events = [
     {
@@ -239,15 +239,6 @@ const EventsScreen = ({ route, navigation }) => {
                                         padding: 20,
                                     }}
                                 />
-                                {/* <Text
-                        style={{
-                          marginLeft: 10,
-                          color: "#fff",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Login With Facebook
-                      </Text> */}
                             </TouchableOpacity>
 
                             <Paragraph>{event.title}</Paragraph>

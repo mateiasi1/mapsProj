@@ -1,6 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import React, { FC, useState } from "react";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
+import {
+    View,
+    TouchableOpacity,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    Keyboard,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Paragraph, Button, TextInput } from "react-native-paper";
 import Event from "../../models/Event";
@@ -11,6 +18,7 @@ type Props = {
 
 const SubEventType: FC<Props> = ({ subEvent }) => {
     const [text, setText] = useState("");
+
     const [selectedSubEventType, setSelectedSubEventType] = useState<number>();
     return (
         <View style={styles.root}>
@@ -45,22 +53,23 @@ const SubEventType: FC<Props> = ({ subEvent }) => {
                         </View>
                     ))}
             </View>
+
             <View>
-                <TextInput
-                    label="Email"
-                    value={text}
-                    onChangeText={(text) => setText(text)}
-                />
-                <TextInput
-                    label="Email"
-                    value={text}
-                    onChangeText={(text) => setText(text)}
-                />
-                <TextInput
-                    label="Email"
-                    value={text}
-                    onChangeText={(text) => setText(text)}
-                />
+                <TouchableOpacity
+                    onPress={() => {
+                        Keyboard.dismiss();
+                        // Handle the button press here
+                    }}
+                >
+                    <TextInput
+                        label="Descriere"
+                        value={text}
+                        multiline={true}
+                        numberOfLines={7}
+                        onChangeText={(text) => setText(text)}
+                        style={{ height: 200, textAlignVertical: "top" }}
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );
