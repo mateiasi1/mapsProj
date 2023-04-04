@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Button, View } from "react-native";
+import { Button, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { API_KEY, Messaging_Service_Sid_Twilio } from "@env";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
     const buffer = Buffer.from(API_KEY).toString("base64");
@@ -56,12 +57,30 @@ const LoginScreenContent = ({ navigation }) => {
                 onBlur={verifyOTP}
                 onChangeText={(text) => setVerificationCode(text)}
             />
-            <TextInput
-                label="Verification code"
-                keyboardType="numeric"
-                maxLength={6}
-            />
+            <View style={styles.container}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={verifyOTP}
+                    // onPress={() => onSelectSubEvent(subEvent)}
+                >
+                    <Text>Verify code</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    button: {
+        width: "80%",
+        alignItems: "center",
+        backgroundColor: "#f4511e",
+        padding: 10,
+        marginTop: 10,
+    },
+});
 export default LoginScreenContent;
