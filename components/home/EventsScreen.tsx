@@ -27,31 +27,31 @@ import SubEvents from "../map/SubEvents";
 const events = [
     {
         id: 1,
-        title: "Pericol",
+        title: "Iluminat stradal",
         icon: faTriangleExclamation,
         color: "black",
         subEvents: [
             {
                 id: 1,
-                title: "Pe drum",
+                title: "Iluminare casrosabil",
                 icon: faRoad,
                 color: "black",
                 subEventTypes: [
                     {
                         id: 1,
-                        title: "Groapa periculoasa",
-                        icon: faCircle,
+                        title: "Bec spart",
+                        icon: faLightbulb,
                         color: "black",
                     },
                     {
                         id: 2,
-                        title: "Semafor nefunctional",
-                        icon: faTrafficLight,
+                        title: "Bec ars",
+                        icon: faLightbulb,
                         color: "black",
                     },
                     {
                         id: 3,
-                        title: "Bec ars",
+                        title: "Altceva",
                         icon: faLightbulb,
                         color: "black",
                     },
@@ -59,7 +59,7 @@ const events = [
             },
             {
                 id: 2,
-                title: "Pe acostament",
+                title: "Iluminare trotuare",
                 icon: faRoadCircleExclamation,
                 color: "black",
                 subEventTypes: [
@@ -73,7 +73,7 @@ const events = [
             },
             {
                 id: 3,
-                title: "Inca ceva",
+                title: "Altceva",
                 icon: faLightbulb,
                 color: "black",
             },

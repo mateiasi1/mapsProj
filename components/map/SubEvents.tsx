@@ -31,7 +31,7 @@ const SubEvents: FC<Props> = ({ event, onSelectSubEvent }) => {
                         event.subEvents !== null &&
                         event.subEvents !== undefined &&
                         event.subEvents.map((subEvent) => (
-                            <View style={styles.itemView}>
+                            <View style={styles.itemView} key={subEvent.id}>
                                 <TouchableOpacity
                                     onPress={() =>
                                         handleSelectSubEvent(subEvent)

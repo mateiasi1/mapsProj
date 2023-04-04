@@ -4,6 +4,7 @@ import { StyleSheet, View, Dimensions } from "react-native";
 
 import * as Location from "expo-location";
 import AccessNotGranted from "../localization/accessNotGranted";
+import LoginScreen from "../login/login.screen";
 
 type Prop = {
     id: string;
@@ -23,6 +24,8 @@ const HomeScreen = ({ navigation }) => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [status, setStatus] = useState(null);
+    //TODO: isLoggedIn will be taken from context
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {
@@ -40,27 +43,28 @@ const HomeScreen = ({ navigation }) => {
             setLocation(location);
         })();
     }, []);
-
+    if (!isLoggedIn) {
+        navigation.navigate("Login");
+    }
+    if (!location) {
+        return <AccessNotGranted />;
+    }
     return (
         <SafeAreaView style={styles.container}>
-            {location ? (
-                <View style={styles.search}>
-                    <Button
-                        title="Admin"
-                        onPress={() => navigation.navigate("Admin")}
-                    />
-                    <Button
-                        title="User"
-                        onPress={() => navigation.navigate("Map")}
-                    />
-                    <Button
-                        title="AccessNotGranted"
-                        onPress={() => navigation.navigate("AccessNotGranted")}
-                    />
-                </View>
-            ) : (
-                <AccessNotGranted />
-            )}
+            <View style={styles.search}>
+                <Button
+                    title="Admin"
+                    onPress={() => navigation.navigate("Admin")}
+                />
+                <Button
+                    title="User"
+                    onPress={() => navigation.navigate("Map")}
+                />
+                <Button
+                    title="AccessNotGranted"
+                    onPress={() => navigation.navigate("AccessNotGranted")}
+                />
+            </View>
         </SafeAreaView>
     );
 };

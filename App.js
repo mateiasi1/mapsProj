@@ -8,6 +8,7 @@ import EventsScreen from "./components/home/EventsScreen";
 import MapScreen from "./components/map/map.screen";
 import AdminEvent from "./components/adminEvent/admin.event.screen";
 import AccessNotGranted from "./components/localization/accessNotGranted";
+import LoginScreen from "./components/login/login.screen";
 export default function App() {
     const Stack = createNativeStackNavigator();
     return (
@@ -23,6 +24,13 @@ export default function App() {
                     },
                 }}
             >
+                <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{
+                        title: "Login",
+                    }}
+                />
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
