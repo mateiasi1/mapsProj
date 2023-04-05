@@ -15,7 +15,11 @@ const AccessNotGranted = () => {
     const optionsPerPage = [2, 3, 4];
     const [page, setPage] = React.useState<number>(0);
     const [itemsPerPage, setItemsPerPage] = React.useState(optionsPerPage[0]);
-
+    const user = {
+        name: "Ionel",
+        phoneNumber: "+40761559101",
+        role: "Labour",
+    };
     return (
         <View style={{ display: "flex", alignItems: "center", padding: "5%" }}>
             <FontAwesomeIcon
@@ -30,7 +34,8 @@ const AccessNotGranted = () => {
             <Text>
                 CityZen are nevoie de locatia ta exacta pentru a-ti oferii
                 indicatii de orientare pas cu pas si pentru a putea adauga
-                evenimente cat mai precis.
+                evenimente cat mai precis. NU VOM FOLOSII LOCATIA TA CU ALTE
+                SCOPURI SAU NU O VOM IMPARTASII CU TERTE PARTI!
             </Text>
             <Text style={{ fontWeight: "bold", marginTop: "5%" }}>
                 Acceseaza setarile, dupa care:

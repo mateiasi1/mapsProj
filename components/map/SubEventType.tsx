@@ -17,6 +17,12 @@ type Props = {
 };
 
 const SubEventType: FC<Props> = ({ subEvent }) => {
+    //TODO: user will be provided by context
+    const user = {
+        name: "Ionel",
+        phoneNumber: "+40761559101",
+        role: "Labour",
+    };
     const [text, setText] = useState("");
 
     const [selectedSubEventType, setSelectedSubEventType] = useState<number>();
@@ -68,7 +74,14 @@ const SubEventType: FC<Props> = ({ subEvent }) => {
                         numberOfLines={7}
                         onChangeText={(text) => setText(text)}
                         style={{ height: 200, textAlignVertical: "top" }}
+                        disabled={user.role !== "PowerUser"}
                     />
+                    {user.role !== "PowerUser" && (
+                        <Text style={styles.infoDisabledText}>
+                            ** The above field is disabled. In order to make it
+                            enabled you should report correctly some issues!
+                        </Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </View>
@@ -79,6 +92,9 @@ const styles = StyleSheet.create({
     root: {
         display: "flex",
         flexDirection: "column",
+    },
+    infoDisabledText: {
+        color: "#808080",
     },
     iconsView: {
         display: "flex",
