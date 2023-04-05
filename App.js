@@ -25,13 +25,6 @@ export default function App() {
                 }}
             >
                 <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    options={{
-                        title: "Login",
-                    }}
-                />
-                <Stack.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
@@ -46,6 +39,13 @@ export default function App() {
                     }}
 
                     //  {(props) => <HomeScreen {...props} extraData={someData} />}  PASSING OTHER PROPS
+                />
+                <Stack.Screen
+                    name="Login"
+                    component={LoginScreen}
+                    options={{
+                        title: "Login",
+                    }}
                 />
                 <Stack.Screen
                     name="Admin"

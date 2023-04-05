@@ -38,7 +38,7 @@ const LoginScreenContent = ({ navigation }) => {
         console.log("OTPCode: " + OTPCode);
         if (Number(verificationCode) === OTPCode) {
             console.log("verificat");
-            navigation.navigate("Map");
+            navigation.navigate("Home");
         }
     };
 

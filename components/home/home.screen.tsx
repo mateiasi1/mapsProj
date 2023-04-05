@@ -24,8 +24,12 @@ const HomeScreen = ({ navigation }) => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [status, setStatus] = useState(null);
-    //TODO: isLoggedIn will be taken from context
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    //TODO: user will be provided by context
+    const user = {
+        name: "Ionel",
+        phoneNumber: "+40761559101",
+        role: "Labour",
+    };
 
     useEffect(() => {
         (async () => {
@@ -43,30 +47,20 @@ const HomeScreen = ({ navigation }) => {
             setLocation(location);
         })();
     }, []);
-    if (!isLoggedIn) {
+    if (!user) {
         navigation.navigate("Login");
     }
     if (!location) {
         return <AccessNotGranted />;
     }
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.search}>
-                <Button
-                    title="Admin"
-                    onPress={() => navigation.navigate("Admin")}
-                />
-                <Button
-                    title="User"
-                    onPress={() => navigation.navigate("Map")}
-                />
-                <Button
-                    title="AccessNotGranted"
-                    onPress={() => navigation.navigate("AccessNotGranted")}
-                />
-            </View>
-        </SafeAreaView>
-    );
+    switch (user.role) {
+        case "Labour":
+            console.log("hit labour=> navigate to map");
+            return navigation.navigate("Map");
+        case "Admin":
+            console.log("hit admin=> navigate to admin");
+            return navigation.navigate("Admin");
+    }
 };
 
 const styles = StyleSheet.create({
