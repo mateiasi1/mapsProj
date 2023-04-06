@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
     const user = {
         name: "Ionel",
         phoneNumber: "+40761559101",
-        role: "Labour",
+        role: "Admin",
     };
 
     useEffect(() => {

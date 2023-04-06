@@ -45,6 +45,7 @@ export default function App() {
                     component={LoginScreen}
                     options={{
                         title: "Login",
+                        headerShown: false,
                     }}
                 />
                 <Stack.Screen
@@ -52,6 +53,7 @@ export default function App() {
                     component={AdminScreen}
                     options={{
                         title: "Admin",
+                        headerLeft: () => <Button title="" />,
                     }}
                 />
                 <Stack.Screen

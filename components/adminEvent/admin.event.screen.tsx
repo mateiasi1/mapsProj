@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { faCar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { MAPS_API_KEY } from "@env";
 
 type Prop = {
     id: number;
@@ -22,7 +23,7 @@ const AdminEvent = ({ navigation, route }) => {
             longitude: event.location.longitude || null,
         },
     ]);
-    const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
+    const apiKey = MAPS_API_KEY;
 
     useEffect(() => {
         axios

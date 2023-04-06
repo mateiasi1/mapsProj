@@ -34,8 +34,11 @@ const AccessNotGranted = () => {
             <Text>
                 CityZen are nevoie de locatia ta exacta pentru a-ti oferii
                 indicatii de orientare pas cu pas si pentru a putea adauga
-                evenimente cat mai precis. NU VOM FOLOSII LOCATIA TA CU ALTE
-                SCOPURI SAU NU O VOM IMPARTASII CU TERTE PARTI!
+                evenimente cat mai precis.
+            </Text>
+            <Text>
+                NU VOM FOLOSII LOCATIA TA CU ALTE SCOPURI SAU NU O VOM
+                IMPARTASII CU TERTE PARTI!
             </Text>
             <Text style={{ fontWeight: "bold", marginTop: "5%" }}>
                 Acceseaza setarile, dupa care:

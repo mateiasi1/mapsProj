@@ -78,7 +78,6 @@ const AdminScreen = ({ navigation }) => {
                                     />
                                 </DataTable.Cell>
                                 <DataTable.Cell>
-                                    {" "}
                                     <FontAwesomeIcon
                                         icon={event.subEvent.icon}
                                         color={event.subEvent.color}
@@ -108,12 +107,19 @@ const AdminScreen = ({ navigation }) => {
             <KeyboardAwareScrollView>
                 {/* <Text>Admin Screen</Text> */}
 
-                <TextInput
+                {/* <TextInput
                     label="Email"
                     value={text}
                     onChangeText={(text) => setText(text)}
-                />
-                <Button title="Go back" onPress={() => navigation.goBack()} />
+                /> */}
+                <View style={styles.lineStyle} />
+                <View style={styles.buttonBox}>
+                    <Button
+                        title="Go to map"
+                        onPress={() => navigation.navigate("Map")}
+                    />
+                </View>
+                <View style={styles.lineStyle} />
             </KeyboardAwareScrollView>
         </View>
     );
@@ -162,6 +168,16 @@ const styles = StyleSheet.create({
     container: {},
     row: {
         width: "15%",
+    },
+    buttonBox: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
+    lineStyle: {
+        borderWidth: 0.5,
+        borderColor: "black",
+        margin: 10,
     },
 });
 export default AdminScreen;

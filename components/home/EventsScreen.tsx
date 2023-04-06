@@ -251,6 +251,7 @@ const EventsScreen = ({ route, navigation }) => {
                     <SubEvents
                         event={selectedEvent}
                         onSelectSubEvent={handleSelectedSubEvent}
+                        navigation={navigation}
                     />
                 </View>
             )}

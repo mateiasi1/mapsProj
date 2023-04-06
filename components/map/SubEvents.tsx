@@ -9,9 +9,10 @@ import SubEventType from "./SubEventType";
 type Props = {
     event: Event;
     onSelectSubEvent: (subEvent: SubEvent) => void;
+    navigation: any;
 };
 
-const SubEvents: FC<Props> = ({ event, onSelectSubEvent }) => {
+const SubEvents: FC<Props> = ({ event, onSelectSubEvent, navigation }) => {
     const [selectedSubEvent, setSelectedSubEvent] = useState<SubEvent>(null);
     const [showSubEventTypes, setShowSubEventTypes] = useState<boolean>(false);
 
@@ -50,7 +51,10 @@ const SubEvents: FC<Props> = ({ event, onSelectSubEvent }) => {
                         ))}
                 </View>
             ) : (
-                <SubEventType subEvent={selectedSubEvent} />
+                <SubEventType
+                    subEvent={selectedSubEvent}
+                    navigation={navigation}
+                />
             )}
         </View>
     );
