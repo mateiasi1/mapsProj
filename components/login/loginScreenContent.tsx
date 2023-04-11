@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { API_KEY, Messaging_Service_Sid_Twilio } from "@env";
+import { UserContext } from "../../contexts/userContext";
 
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
@@ -9,6 +10,9 @@ const LoginScreenContent = ({ navigation }) => {
     const [OTPCode, setOTPCode] = useState<number>();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [verificationCode, setVerificationCode] = useState<string>();
+
+    const { setUser, login } = useContext(UserContext);
+
     const onButtonClick = () => {
         const newlyCreatedOTP = Math.floor(Math.random() * 900000) + 100000;
 
@@ -38,6 +42,7 @@ const LoginScreenContent = ({ navigation }) => {
         console.log("OTPCode: " + OTPCode);
         if (Number(verificationCode) === OTPCode) {
             console.log("verificat");
+            login();
             navigation.navigate("Home");
         }
     };
