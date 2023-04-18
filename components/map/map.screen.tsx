@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, SafeAreaView, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
@@ -8,6 +8,8 @@ import Event from "../../models/Event";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 import calculateDistance from "../helpers/calculateDistance";
+import { UserContext } from "../../contexts/userContext";
+import UserRoles from "../../models/UserRoles";
 
 type Prop = {
     id: string;
@@ -17,6 +19,7 @@ type Prop = {
 const apiKey = "AIzaSyDL0CkTAL35ku-O53PGIi_aM4A4I1FS4rQ";
 
 const MapScreen = ({ route, navigation }) => {
+    const { user } = useContext(UserContext);
     const [placeId, setPlaceId] = useState("");
     //GET this from the context when the home will save it there
     const currentLocation = {
@@ -158,19 +161,20 @@ const MapScreen = ({ route, navigation }) => {
                         )
                 )}
             </MapView>
-
-            <FAB
-                icon="plus"
-                color="#fff"
-                style={styles.fab}
-                onPress={() => (
-                    navigation.navigate("Events", {
-                        itemId: currentLocation.id,
-                        otherParam: "anything you want here",
-                    }),
-                    onFabPress()
-                )}
-            />
+            {user.role === UserRoles.User && (
+                <FAB
+                    icon="plus"
+                    color="#fff"
+                    style={styles.fab}
+                    onPress={() => (
+                        navigation.navigate("Events", {
+                            itemId: currentLocation.id,
+                            otherParam: "anything you want here",
+                        }),
+                        onFabPress()
+                    )}
+                />
+            )}
         </SafeAreaView>
     );
 };
