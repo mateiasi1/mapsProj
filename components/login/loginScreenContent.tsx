@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Button, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
-import { API_KEY, Messaging_Service_Sid_Twilio } from "@env";
+import { API_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
 
 const LoginScreenContent = ({ navigation }) => {
@@ -17,24 +17,21 @@ const LoginScreenContent = ({ navigation }) => {
         const newlyCreatedOTP = Math.floor(Math.random() * 900000) + 100000;
 
         setOTPCode(newlyCreatedOTP);
-        fetch(
-            "https://api.twilio.com/2010-04-01/Accounts/AC3e92b22ecef83fd2f6fedc27993e2dd9/Messages.json",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    Authorization: `Basic ${buffer}`,
-                },
-                body: `To=+40761559101&From=+15677496610&Body=Your CityZen authentication code:${newlyCreatedOTP}&MessagingServiceSid=${Messaging_Service_Sid_Twilio}`,
-            }
-        )
+        fetch(`${BE_API_URL}/api/Auth/SendVerificationMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                phoneNumber: "+40761559101",
+                verificationCode: 0,
+            }),
+        })
             .then((response) => {
                 // handle response
                 console.log("yay" + response.status);
             })
             .catch((error) => {
                 // handle error
-                console.log("meh");
+                console.log("meh " + error);
             });
     };
     const verifyOTP = () => {
@@ -48,7 +45,7 @@ const LoginScreenContent = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <View style={styles.root}>
             <TextInput
                 label="Phone number"
                 value={phoneNumber}
@@ -75,6 +72,9 @@ const LoginScreenContent = ({ navigation }) => {
     );
 };
 const styles = StyleSheet.create({
+    root: {
+        marginTop: 50,
+    },
     container: {
         display: "flex",
         flexDirection: "column",

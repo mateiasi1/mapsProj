@@ -57,14 +57,14 @@ const HomeScreen = ({ navigation }) => {
     if (!location) {
         return <AccessNotGranted />;
     }
-    switch (user.role) {
-        case UserRoles.Labour:
-            console.log("hit labour=> navigate to map");
-            return navigation.navigate("Map");
-        case UserRoles.Admin:
-            console.log("hit admin=> navigate to admin");
-            return navigation.navigate("Admin");
-    }
+    // switch (user.role) {
+    //     case UserRoles.Labour:
+    //         console.log("hit labour=> navigate to map");
+    //         return navigation.navigate("Map");
+    //     case UserRoles.Admin:
+    //         console.log("hit admin=> navigate to admin");
+    //         return navigation.navigate("Admin");
+    // }
 };
 
 export default HomeScreen;
