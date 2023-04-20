@@ -54,6 +54,9 @@ const LoginScreenContent = ({ navigation }) => {
             console.log(response);
             if (response.status === HttpStatusCode.Accepted) login();
             navigation.navigate("Home");
+            //if(response.status === HttpStatusCode.Unauthorized){
+            // TODO://add mesaj de trimite incearca din nou codul, la 3 greseli primesti altul dupa 5 min
+            //}
         } catch (error) {
             console.error("Error:  " + error);
         }
