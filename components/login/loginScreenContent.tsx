@@ -3,6 +3,8 @@ import { Button, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { API_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
@@ -10,10 +12,13 @@ const LoginScreenContent = ({ navigation }) => {
     const [OTPCode, setOTPCode] = useState<number>();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [verificationCode, setVerificationCode] = useState<string>();
-
     const { setUser, login } = useContext(UserContext);
-
+    const [isPhoneSet, setIsPhoneSet] = useState<boolean>(false);
     const onButtonClick = () => {
+        if (!phoneNumber) {
+            return;
+        }
+        setIsPhoneSet(true);
         const newlyCreatedOTP = Math.floor(Math.random() * 900000) + 100000;
 
         setOTPCode(newlyCreatedOTP);
@@ -21,7 +26,7 @@ const LoginScreenContent = ({ navigation }) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                phoneNumber: "+40761559101",
+                phoneNumber: phoneNumber,
                 verificationCode: 0,
             }),
         })
@@ -46,27 +51,62 @@ const LoginScreenContent = ({ navigation }) => {
 
     return (
         <View style={styles.root}>
-            <TextInput
-                label="Phone number"
-                value={phoneNumber}
-                onChangeText={(text) => setPhoneNumber(text)}
-                onFocus={onButtonClick}
-            />
-            <TextInput
-                label="Verification code"
-                keyboardType="numeric"
-                maxLength={6}
-                onBlur={verifyOTP}
-                onChangeText={(text) => setVerificationCode(text)}
-            />
+            <View style={styles.phoneNumber}>
+                <TextInput
+                    label="Phone number"
+                    value={phoneNumber}
+                    onChangeText={(text) => setPhoneNumber(text)}
+                    disabled={isPhoneSet}
+                    style={{ width: isPhoneSet ? "90%" : "100%" }}
+                />
+                {isPhoneSet && (
+                    <View
+                        style={{
+                            width: "10%",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <TouchableOpacity onPress={() => setIsPhoneSet(false)}>
+                            <FontAwesomeIcon icon={faPen} size={25} />
+                        </TouchableOpacity>
+                    </View>
+                )}
+            </View>
+            {!isPhoneSet && (
+                <Text style={styles.mandatoryField}>
+                    * This field is mandatory
+                </Text>
+            )}
             <View style={styles.container}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={verifyOTP}
-                    // onPress={() => onSelectSubEvent(subEvent)}
-                >
-                    <Text>Verify code</Text>
-                </TouchableOpacity>
+                {isPhoneSet ? (
+                    <View style={styles.verification}>
+                        <TextInput
+                            label="Verification code"
+                            keyboardType="numeric"
+                            maxLength={6}
+                            onBlur={verifyOTP}
+                            onChangeText={(text) => setVerificationCode(text)}
+                            style={styles.field}
+                        />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={verifyOTP}
+                            // onPress={() => onSelectSubEvent(subEvent)}
+                        >
+                            <Text>Verify code</Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={onButtonClick}
+                        // onPress={() => onSelectSubEvent(subEvent)}
+                    >
+                        <Text>Send code</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -86,6 +126,25 @@ const styles = StyleSheet.create({
         backgroundColor: "#f4511e",
         padding: 10,
         marginTop: 10,
+    },
+    mandatoryField: {
+        color: "#ff0033",
+        padding: 10,
+        paddingBottom: 0,
+    },
+    field: {
+        width: "100%",
+    },
+    verification: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    phoneNumber: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
     },
 });
 export default LoginScreenContent;
