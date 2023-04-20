@@ -5,6 +5,7 @@ import { API_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { HttpStatusCode } from "axios";
 
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
@@ -39,13 +40,22 @@ const LoginScreenContent = ({ navigation }) => {
                 console.log("meh " + error);
             });
     };
-    const verifyOTP = () => {
-        console.log("verificationCode: " + verificationCode);
-        console.log("OTPCode: " + OTPCode);
-        if (Number(verificationCode) === OTPCode) {
-            console.log("verificat");
-            login();
+    const verifyOTP = async () => {
+        try {
+            const response = await fetch(`${BE_API_URL}/api/Auth/Login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    phoneNumber: phoneNumber,
+                    verificationCode: verificationCode,
+                }),
+            });
+            // const data = await response.json();
+            console.log(response);
+            if (response.status === HttpStatusCode.Accepted) login();
             navigation.navigate("Home");
+        } catch (error) {
+            console.error("Error:  " + error);
         }
     };
 
