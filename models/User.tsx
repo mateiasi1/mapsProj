@@ -3,9 +3,7 @@ import UserRoles from "./UserRoles";
 type User = {
     name: string;
     phoneNumber: string;
-    role: UserRoles;
-    token?: string;
-    activeUntil?: Date;
+    userRole: UserRoles;
 };
 
 export default User;

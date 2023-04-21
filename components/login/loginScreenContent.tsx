@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Button, TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { API_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
@@ -9,11 +9,10 @@ import { HttpStatusCode } from "axios";
 
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
-    const buffer = Buffer.from(API_KEY).toString("base64");
     const [OTPCode, setOTPCode] = useState<number>();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [verificationCode, setVerificationCode] = useState<string>();
-    const { setUser, login } = useContext(UserContext);
+    const { user, login } = useContext(UserContext);
     const [isPhoneSet, setIsPhoneSet] = useState<boolean>(false);
     const onButtonClick = () => {
         if (!phoneNumber) {
@@ -41,24 +40,13 @@ const LoginScreenContent = ({ navigation }) => {
             });
     };
     const verifyOTP = async () => {
-        try {
-            const response = await fetch(`${BE_API_URL}/api/Auth/Login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    phoneNumber: phoneNumber,
-                    verificationCode: verificationCode,
-                }),
-            });
-            // const data = await response.json();
-            console.log(response);
-            if (response.status === HttpStatusCode.Accepted) login();
+        const loginStatus = login(phoneNumber, verificationCode);
+        console.log("loginStatus " + loginStatus);
+        if (user) {
             navigation.navigate("Home");
-            //if(response.status === HttpStatusCode.Unauthorized){
+        }
+        if (loginStatus === HttpStatusCode.Unauthorized) {
             // TODO://add mesaj de trimite incearca din nou codul, la 3 greseli primesti altul dupa 5 min
-            //}
-        } catch (error) {
-            console.error("Error:  " + error);
         }
     };
 

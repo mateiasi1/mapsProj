@@ -57,13 +57,16 @@ const HomeScreen = ({ navigation }) => {
     if (!location) {
         return <AccessNotGranted />;
     }
-    // switch (user.role) {
-    //     case UserRoles.Labour:
-    //         console.log("hit labour=> navigate to map");
-    //         return navigation.navigate("Map");
-    //     case UserRoles.Admin:
-    //         console.log("hit admin=> navigate to admin");
-    //         return navigation.navigate("Admin");
+    console.log("user.role: " + JSON.stringify(user));
+    // if (user !== null) {
+    //     switch (user.role) {
+    //         case UserRoles.Labour:
+    //             console.log("hit labour=> navigate to map");
+    //             return navigation.navigate("Map");
+    //         case UserRoles.Admin:
+    //             console.log("hit admin=> navigate to admin");
+    //             return navigation.navigate("Admin");
+    //     }
     // }
 };
 
