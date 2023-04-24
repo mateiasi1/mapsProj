@@ -1,19 +1,81 @@
-import { useContext, useState } from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import {
+    TouchableOpacity,
+    View,
+    Text,
+    StyleSheet,
+    Alert,
+    Button,
+} from "react-native";
 import { TextInput } from "react-native-paper";
-import { API_KEY, BE_API_URL } from "@env";
+import { JWT_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { HttpStatusCode } from "axios";
-
+import jwtDecode from "jwt-decode";
+import * as SecureStore from "expo-secure-store";
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
     const [OTPCode, setOTPCode] = useState<number>();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [verificationCode, setVerificationCode] = useState<string>();
-    const { user, login } = useContext(UserContext);
+    const { user, setUser, login, logout } = useContext(UserContext);
     const [isPhoneSet, setIsPhoneSet] = useState<boolean>(false);
+
+    const handleGetToken = async () => {
+        const tokenFromPersistentState = await SecureStore.getItemAsync(
+            "@token"
+        );
+        if (tokenFromPersistentState) {
+            Alert.alert(
+                "This token is stored on your device, isn't that cool!:",
+                tokenFromPersistentState
+            );
+        }
+    };
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const token = await SecureStore.getItemAsync("_token");
+
+                console.log("token: " + token);
+                if (token !== null) {
+                    var decoded = jwtDecode(token);
+                    const expirationDate = new Date(decoded.exp);
+                    if (expirationDate.getDate() > new Date().getDate()) {
+                        await SecureStore.deleteItemAsync("@token");
+                        logout();
+                        return;
+                    }
+                    fetch(`${BE_API_URL}/api/Auth/getUser`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                        .then(async (response) => {
+                            // handle response
+                            const data = await response.json();
+                            setUser(data);
+                            console.log("yay" + response.status);
+                        })
+                        .catch((error) => {
+                            // handle error
+                            console.log("meh " + error);
+                        });
+
+                    navigation.navigate("Home");
+                }
+            } catch (e) {
+                // error reading value
+            }
+        };
+        getData();
+    }, []);
+
     const onButtonClick = () => {
         if (!phoneNumber) {
             return;
@@ -109,6 +171,7 @@ const LoginScreenContent = ({ navigation }) => {
                     </TouchableOpacity>
                 )}
             </View>
+            <Button title="get token" onPress={handleGetToken} />
         </View>
     );
 };

@@ -1,7 +1,7 @@
 enum UserRoles {
-    Admin,
-    User,
-    Labour,
-    Accountant,
+    Admin = 0,
+    User = 10,
+    Labour = 20,
+    Accountant = 30,
 }
 export default UserRoles;

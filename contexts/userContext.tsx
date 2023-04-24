@@ -3,21 +3,15 @@ import UserRoles from "../models/UserRoles";
 import User from "../models/User";
 import { BE_API_URL } from "@env";
 import { HttpStatusCode } from "axios";
+import * as SecureStore from "expo-secure-store";
 
 export const UserContext = createContext(null);
 
 export const UserContextProvider = ({ children }) => {
     // const [user, setUser] = useState(null);
 
-    const [user, setUser] = useState<User>();
-    //     {
-    //     name: "Ionel",
-    //     phoneNumber: "+40761559101",
-    //     role: UserRoles.Admin,
-    //     token: null,
-    //     activeUntil: new Date("2023-05-01T00:00:00Z"),
-    // }
-    // const [user, setUser] = useState<User>(null);
+    const [user, setUser] = useState<User>(null);
+
     const login = async (phoneNumber: string, verificationCode: string) => {
         try {
             const response = await fetch(`${BE_API_URL}/api/Auth/Login`, {
@@ -33,6 +27,15 @@ export const UserContextProvider = ({ children }) => {
             console.log("status" + response.status);
             if (response.status === HttpStatusCode.Ok) {
                 setUser(data.user);
+                try {
+                    // await AsyncStorage.setItem(
+                    //     "@token",
+                    //     JSON.stringify(data.token)
+                    // );
+                    await SecureStore.setItemAsync("_token", data.token);
+                } catch (e) {
+                    // saving error
+                }
                 return response.status;
             }
         } catch (error) {
@@ -40,9 +43,10 @@ export const UserContextProvider = ({ children }) => {
         }
     };
     const logout = () => {
-        fetch("/logout").then((res) => {
-            setUser(null);
-        });
+        // fetch("/logout").then((res) => {
+        //     setUser(null);
+        // });
+        setUser(null);
     };
 
     const value = {

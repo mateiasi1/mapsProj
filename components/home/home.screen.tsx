@@ -7,6 +7,7 @@ import AccessNotGranted from "../localization/accessNotGranted";
 import LoginScreen from "../login/login.screen";
 import UserRoles from "../../models/UserRoles";
 import { UserContext } from "../../contexts/userContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Prop = {
     id: string;
@@ -26,16 +27,10 @@ const HomeScreen = ({ navigation }) => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [status, setStatus] = useState(null);
-    //TODO: user will be provided by context
-    // const user = {
-    //     name: "Ionel",
-    //     phoneNumber: "+40761559101",
-    //     role: "Admin",
-    // };
-
     const { user } = useContext(UserContext);
 
-    useEffect(() => {
+    useEffect(async () => {
+        await AsyncStorage.removeItem("@token");
         (async () => {
             var internalStatus =
                 await Location.requestForegroundPermissionsAsync();
@@ -57,17 +52,19 @@ const HomeScreen = ({ navigation }) => {
     if (!location) {
         return <AccessNotGranted />;
     }
-    console.log("user.role: " + JSON.stringify(user));
-    // if (user !== null) {
-    //     switch (user.role) {
-    //         case UserRoles.Labour:
-    //             console.log("hit labour=> navigate to map");
-    //             return navigation.navigate("Map");
-    //         case UserRoles.Admin:
-    //             console.log("hit admin=> navigate to admin");
-    //             return navigation.navigate("Admin");
-    //     }
-    // }
+    if (user !== null && user !== undefined) {
+        switch (user.userRole) {
+            case UserRoles.Labour:
+                console.log("hit labour=> navigate to map");
+                return navigation.navigate("Map");
+            case UserRoles.User:
+                console.log("hit user=> navigate to map");
+                return navigation.navigate("Map");
+            case UserRoles.Admin:
+                console.log("hit admin=> navigate to admin");
+                return navigation.navigate("Admin");
+        }
+    }
 };
 
 export default HomeScreen;

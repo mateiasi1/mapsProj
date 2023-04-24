@@ -78,9 +78,9 @@ const SubEventType: FC<Props> = ({ subEvent, navigation }) => {
                     numberOfLines={7}
                     onChangeText={(description) => setDescription(description)}
                     style={{ height: 200, textAlignVertical: "top" }}
-                    disabled={user.role !== "PowerUser"}
+                    disabled={user.userRole !== "PowerUser"}
                 />
-                {user.role !== "PowerUser" && (
+                {user.userRole !== "PowerUser" && (
                     <Text style={styles.infoDisabledText}>
                         ** The above field is disabled. In order to make it
                         enabled you should report correctly some issues!

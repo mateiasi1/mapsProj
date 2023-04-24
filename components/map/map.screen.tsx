@@ -161,7 +161,7 @@ const MapScreen = ({ route, navigation }) => {
                         )
                 )}
             </MapView>
-            {user.role === UserRoles.User && (
+            {user.userRole === UserRoles.User && (
                 <FAB
                     icon="plus"
                     color="#fff"

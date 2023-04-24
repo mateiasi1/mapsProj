@@ -78,6 +78,7 @@ export default function App() {
                         component={MapScreen}
                         options={{
                             title: "Map",
+                            headerLeft: () => <Button title="" />,
                         }}
                     />
                     <Stack.Screen
