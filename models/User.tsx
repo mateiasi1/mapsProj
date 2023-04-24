@@ -1,4 +1,4 @@
-import UserRoles from "./UserRoles";
+import UserRoles from "../components/enum/UserRoles";
 
 type User = {
     name: string;

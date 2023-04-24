@@ -5,7 +5,7 @@ import { StyleSheet, View, Dimensions } from "react-native";
 import * as Location from "expo-location";
 import AccessNotGranted from "../localization/accessNotGranted";
 import LoginScreen from "../login/login.screen";
-import UserRoles from "../../models/UserRoles";
+import UserRoles from "../enum/UserRoles";
 import { UserContext } from "../../contexts/userContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -55,13 +55,10 @@ const HomeScreen = ({ navigation }) => {
     if (user !== null && user !== undefined) {
         switch (user.userRole) {
             case UserRoles.Labour:
-                console.log("hit labour=> navigate to map");
                 return navigation.navigate("Map");
             case UserRoles.User:
-                console.log("hit user=> navigate to map");
                 return navigation.navigate("Map");
             case UserRoles.Admin:
-                console.log("hit admin=> navigate to admin");
                 return navigation.navigate("Admin");
         }
     }

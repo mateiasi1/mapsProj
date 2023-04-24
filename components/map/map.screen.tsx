@@ -9,7 +9,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import axios from "axios";
 import calculateDistance from "../helpers/calculateDistance";
 import { UserContext } from "../../contexts/userContext";
-import UserRoles from "../../models/UserRoles";
+import UserRoles from "../enum/UserRoles";
 
 type Prop = {
     id: string;
@@ -161,7 +161,7 @@ const MapScreen = ({ route, navigation }) => {
                         )
                 )}
             </MapView>
-            {user.userRole === UserRoles.User && (
+            {user.userRole !== UserRoles.Labour && (
                 <FAB
                     icon="plus"
                     color="#fff"

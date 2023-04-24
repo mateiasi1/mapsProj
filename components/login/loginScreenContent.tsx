@@ -40,7 +40,6 @@ const LoginScreenContent = ({ navigation }) => {
             try {
                 const token = await SecureStore.getItemAsync("_token");
 
-                console.log("token: " + token);
                 if (token !== null) {
                     var decoded = jwtDecode(token);
                     const expirationDate = new Date(decoded.exp);
@@ -60,7 +59,6 @@ const LoginScreenContent = ({ navigation }) => {
                             // handle response
                             const data = await response.json();
                             setUser(data);
-                            console.log("yay" + response.status);
                         })
                         .catch((error) => {
                             // handle error
@@ -94,11 +92,9 @@ const LoginScreenContent = ({ navigation }) => {
         })
             .then((response) => {
                 // handle response
-                console.log("yay" + response.status);
             })
             .catch((error) => {
                 // handle error
-                console.log("meh " + error);
             });
     };
     const verifyOTP = async () => {

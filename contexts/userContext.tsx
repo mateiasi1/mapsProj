@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import UserRoles from "../models/UserRoles";
+import UserRoles from "../components/enum/UserRoles";
 import User from "../models/User";
 import { BE_API_URL } from "@env";
 import { HttpStatusCode } from "axios";
@@ -24,7 +24,6 @@ export const UserContextProvider = ({ children }) => {
             });
             const data = await response.json();
 
-            console.log("status" + response.status);
             if (response.status === HttpStatusCode.Ok) {
                 setUser(data.user);
                 try {
