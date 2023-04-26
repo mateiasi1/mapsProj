@@ -5,6 +5,12 @@ module.exports = function (api) {
         presets: ["babel-preset-expo"],
         plugins: [
             [
+                "react-native-reanimated/plugin",
+                {
+                    // options for react-native-reanimated plugin
+                },
+            ],
+            [
                 "module:react-native-dotenv",
                 {
                     moduleName: "@env",

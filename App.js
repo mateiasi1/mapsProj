@@ -2,7 +2,7 @@ import * as React from "react";
 import HomeScreen from "./components/home/home.screen";
 import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import AdminScreen from "./components/home/admin.screen";
 import EventsScreen from "./components/home/EventsScreen";
 import MapScreen from "./components/map/map.screen";
@@ -12,11 +12,11 @@ import LoginScreen from "./components/login/login.screen";
 import { UserContextProvider } from "./contexts/userContext";
 
 export default function App() {
-    const Stack = createNativeStackNavigator();
+    const Drawer = createDrawerNavigator();
     return (
         <UserContextProvider>
             <NavigationContainer>
-                <Stack.Navigator
+                <Drawer.Navigator
                     screenOptions={{
                         headerStyle: {
                             backgroundColor: "#f4511e",
@@ -27,7 +27,7 @@ export default function App() {
                         },
                     }}
                 >
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="Home"
                         component={HomeScreen}
                         options={{
@@ -43,52 +43,55 @@ export default function App() {
 
                         //  {(props) => <HomeScreen {...props} extraData={someData} />}  PASSING OTHER PROPS
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="Login"
                         component={LoginScreen}
                         options={{
                             title: "Login",
                             headerShown: false,
+                            drawerItemStyle: { display: "none" },
                         }}
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="Admin"
                         component={AdminScreen}
                         options={{
                             title: "Admin",
                             headerLeft: () => <Button title="" />,
+                            drawerItemStyle: { display: "none" },
                         }}
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="AccessNotGranted"
                         component={AccessNotGranted}
                         options={{
                             title: "AccessNotGranted",
+                            drawerItemStyle: { display: "none" },
                         }}
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="Events"
                         component={EventsScreen}
                         options={{
                             title: "Events",
                         }}
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="Map"
                         component={MapScreen}
                         options={{
                             title: "Map",
-                            headerLeft: () => <Button title="" />,
                         }}
                     />
-                    <Stack.Screen
+                    <Drawer.Screen
                         name="AdminEvent"
                         component={AdminEvent}
                         options={{
                             title: "Admin Event",
+                            drawerItemStyle: { display: "none" },
                         }}
                     />
-                </Stack.Navigator>
+                </Drawer.Navigator>
             </NavigationContainer>
         </UserContextProvider>
     );
