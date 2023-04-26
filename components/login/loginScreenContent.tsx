@@ -25,7 +25,7 @@ const LoginScreenContent = ({ navigation }) => {
 
     const handleGetToken = async () => {
         const tokenFromPersistentState = await SecureStore.getItemAsync(
-            "@token"
+            "_token"
         );
         if (tokenFromPersistentState) {
             Alert.alert(
@@ -44,7 +44,7 @@ const LoginScreenContent = ({ navigation }) => {
                     var decoded = jwtDecode(token);
                     const expirationDate = new Date(decoded.exp);
                     if (expirationDate.getDate() > new Date().getDate()) {
-                        await SecureStore.deleteItemAsync("@token");
+                        await SecureStore.deleteItemAsync("_token");
                         logout();
                         return;
                     }

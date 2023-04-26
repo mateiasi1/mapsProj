@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
     const { user } = useContext(UserContext);
 
     useEffect(async () => {
-        await AsyncStorage.removeItem("@token");
+        await AsyncStorage.removeItem("_token");
         (async () => {
             var internalStatus =
                 await Location.requestForegroundPermissionsAsync();

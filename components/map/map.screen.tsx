@@ -114,9 +114,6 @@ const MapScreen = ({ route, navigation }) => {
             otherParam: "anything you want here",
         });
     };
-    const showDialog = () => setVisible(true);
-
-    const hideDialog = () => setVisible(false);
 
     useEffect(() => {
         if (route.params?.post) {
@@ -161,20 +158,22 @@ const MapScreen = ({ route, navigation }) => {
                         )
                 )}
             </MapView>
-            {user.userRole !== UserRoles.Labour && (
-                <FAB
-                    icon="plus"
-                    color="#fff"
-                    style={styles.fab}
-                    onPress={() => (
-                        navigation.navigate("Events", {
-                            itemId: currentLocation.id,
-                            otherParam: "anything you want here",
-                        }),
-                        onFabPress()
-                    )}
-                />
-            )}
+            {user !== null &&
+                user.userRole !== null &&
+                user.userRole !== UserRoles.Labour && (
+                    <FAB
+                        icon="plus"
+                        color="#fff"
+                        style={styles.fab}
+                        onPress={() => (
+                            navigation.navigate("Events", {
+                                itemId: currentLocation.id,
+                                otherParam: "anything you want here",
+                            }),
+                            onFabPress()
+                        )}
+                    />
+                )}
         </SafeAreaView>
     );
 };

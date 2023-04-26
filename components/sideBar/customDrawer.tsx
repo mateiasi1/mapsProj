@@ -2,14 +2,24 @@ import {
     DrawerContentScrollView,
     DrawerItemList,
 } from "@react-navigation/drawer";
-import { View, Text, ImageBackground, Image } from "react-native";
+import {
+    View,
+    Text,
+    ImageBackground,
+    Image,
+    TouchableOpacity,
+} from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
     faCheckDouble,
     faCircleExclamation,
+    faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/userContext";
 
 const CustomDrawer = (props) => {
+    const { logout } = useContext(UserContext);
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView
@@ -33,7 +43,6 @@ const CustomDrawer = (props) => {
                         style={{
                             color: "#fff",
                             fontSize: 18,
-                            fontFamily: "Roboto-Medium",
                             marginBottom: 5,
                         }}
                     >
@@ -44,7 +53,6 @@ const CustomDrawer = (props) => {
                             <Text
                                 style={{
                                     color: "#fff",
-                                    fontFamily: "Roboto-Regular",
                                     marginRight: 5,
                                 }}
                             >
@@ -60,7 +68,6 @@ const CustomDrawer = (props) => {
                             <Text
                                 style={{
                                     color: "#fff",
-                                    fontFamily: "Roboto-Regular",
                                     marginRight: 5,
                                 }}
                             >
@@ -80,8 +87,37 @@ const CustomDrawer = (props) => {
                     <DrawerItemList {...props} />
                 </View>
             </DrawerContentScrollView>
-            <View>
-                <Text>Our Custom</Text>
+            <View
+                style={{
+                    padding: 20,
+                    borderTopWidth: 1,
+                    borderTopColor: "#ccc",
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        logout();
+                    }}
+                    style={{ paddingVertical: 15 }}
+                >
+                    <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                        <FontAwesomeIcon
+                            icon={faArrowRightFromBracket}
+                            color={"#000"}
+                            size={22}
+                        />
+                        <Text
+                            style={{
+                                fontSize: 15,
+                                marginLeft: 5,
+                            }}
+                        >
+                            Logout
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

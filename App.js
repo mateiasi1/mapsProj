@@ -12,6 +12,13 @@ import LoginScreen from "./components/login/login.screen";
 import { UserContextProvider } from "./contexts/userContext";
 import UserScreen from "./components/user/user.screen";
 import CustomDrawer from "./components/sideBar/customDrawer";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+    faUser,
+    faHouse,
+    faMap,
+    faCircleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function App() {
     const Drawer = createDrawerNavigator();
@@ -27,6 +34,13 @@ export default function App() {
                         headerTitleStyle: {
                             fontWeight: "bold",
                         },
+                        drawerLabelStyle: {
+                            marginLeft: -25,
+                            fontSize: 15,
+                        },
+                        drawerActiveBackgroundColor: "#f4511e",
+                        drawerActiveTintColor: "#fff",
+                        drawerInactiveTintColor: "#333",
                     }}
                     drawerContent={(props) => <CustomDrawer {...props} />}
                 >
@@ -40,6 +54,13 @@ export default function App() {
                                     onPress={() => alert("This is a button!")}
                                     title="Info"
                                     color="#fff"
+                                />
+                            ),
+                            drawerIcon: ({ color }) => (
+                                <FontAwesomeIcon
+                                    icon={faHouse}
+                                    color={color}
+                                    size={22}
                                 />
                             ),
                         }}
@@ -77,6 +98,13 @@ export default function App() {
                         component={EventsScreen}
                         options={{
                             title: "Events",
+                            drawerIcon: ({ color }) => (
+                                <FontAwesomeIcon
+                                    icon={faCircleExclamation}
+                                    color={color}
+                                    size={22}
+                                />
+                            ),
                         }}
                     />
                     <Drawer.Screen
@@ -84,6 +112,13 @@ export default function App() {
                         component={UserScreen}
                         options={{
                             title: "User",
+                            drawerIcon: ({ color }) => (
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    color={color}
+                                    size={22}
+                                />
+                            ),
                         }}
                     />
                     <Drawer.Screen
@@ -91,6 +126,13 @@ export default function App() {
                         component={MapScreen}
                         options={{
                             title: "Map",
+                            drawerIcon: ({ color }) => (
+                                <FontAwesomeIcon
+                                    icon={faMap}
+                                    color={color}
+                                    size={22}
+                                />
+                            ),
                         }}
                     />
                     <Drawer.Screen

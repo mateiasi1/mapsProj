@@ -7,7 +7,7 @@ import * as SecureStore from "expo-secure-store";
 
 export const UserContext = createContext(null);
 
-export const UserContextProvider = ({ children }) => {
+export const UserContextProvider = ({ navigation, children }) => {
     // const [user, setUser] = useState(null);
 
     const [user, setUser] = useState<User>(null);
@@ -41,11 +41,11 @@ export const UserContextProvider = ({ children }) => {
             console.error("Error:  " + error);
         }
     };
-    const logout = () => {
-        // fetch("/logout").then((res) => {
-        //     setUser(null);
-        // });
+    const logout = async () => {
+        await SecureStore.deleteItemAsync("_token");
+
         setUser(null);
+        navigation.navigate("Login");
     };
 
     const value = {
