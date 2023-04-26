@@ -10,6 +10,8 @@ import AdminEvent from "./components/adminEvent/admin.event.screen";
 import AccessNotGranted from "./components/localization/accessNotGranted";
 import LoginScreen from "./components/login/login.screen";
 import { UserContextProvider } from "./contexts/userContext";
+import UserScreen from "./components/user/user.screen";
+import CustomDrawer from "./components/sideBar/customDrawer";
 
 export default function App() {
     const Drawer = createDrawerNavigator();
@@ -26,6 +28,7 @@ export default function App() {
                             fontWeight: "bold",
                         },
                     }}
+                    drawerContent={(props) => <CustomDrawer {...props} />}
                 >
                     <Drawer.Screen
                         name="Home"
@@ -74,6 +77,13 @@ export default function App() {
                         component={EventsScreen}
                         options={{
                             title: "Events",
+                        }}
+                    />
+                    <Drawer.Screen
+                        name="User"
+                        component={UserScreen}
+                        options={{
+                            title: "User",
                         }}
                     />
                     <Drawer.Screen
