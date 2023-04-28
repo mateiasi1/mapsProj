@@ -11,10 +11,11 @@ import { TextInput } from "react-native-paper";
 import { JWT_KEY, BE_API_URL } from "@env";
 import { UserContext } from "../../contexts/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { HttpStatusCode } from "axios";
 import jwtDecode from "jwt-decode";
 import * as SecureStore from "expo-secure-store";
+import { CustomErrorCodes } from "../constants/customErrorCodes";
 const LoginScreenContent = ({ navigation }) => {
     const Buffer = require("buffer").Buffer;
     const [OTPCode, setOTPCode] = useState<number>();
@@ -22,18 +23,8 @@ const LoginScreenContent = ({ navigation }) => {
     const [verificationCode, setVerificationCode] = useState<string>();
     const { user, setUser, login, logout } = useContext(UserContext);
     const [isPhoneSet, setIsPhoneSet] = useState<boolean>(false);
-
-    const handleGetToken = async () => {
-        const tokenFromPersistentState = await SecureStore.getItemAsync(
-            "_token"
-        );
-        if (tokenFromPersistentState) {
-            Alert.alert(
-                "This token is stored on your device, isn't that cool!:",
-                tokenFromPersistentState
-            );
-        }
-    };
+    const [isCodeValid, setIsCodeValid] = useState<boolean>(true);
+    const [attemtps, setAttempts] = useState<boolean>(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -99,7 +90,12 @@ const LoginScreenContent = ({ navigation }) => {
     };
     const verifyOTP = async () => {
         const loginStatus = await login(phoneNumber, verificationCode);
-        console.log("loginStatus " + JSON.stringify(loginStatus) + "test");
+        console.log(
+            "loginStatus " +
+                loginStatus +
+                " " +
+                CustomErrorCodes.MAX_ATTEMPT_REACHED
+        );
         if (user) {
             navigation.navigate("Home");
         }
@@ -108,6 +104,11 @@ const LoginScreenContent = ({ navigation }) => {
             console.log(
                 "loginStatus " + JSON.stringify(loginStatus) + "test333"
             );
+            setIsCodeValid(false);
+        }
+        if (loginStatus === CustomErrorCodes.MAX_ATTEMPT_REACHED) {
+            setAttempts(true);
+            setIsCodeValid(true);
         }
     };
 
@@ -157,20 +158,55 @@ const LoginScreenContent = ({ navigation }) => {
                             onPress={verifyOTP}
                             // onPress={() => onSelectSubEvent(subEvent)}
                         >
-                            <Text>Verify code</Text>
+                            {attemtps ? (
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        gap: 5,
+                                    }}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faArrowsRotate}
+                                        size={15}
+                                    />
+                                    <Text>Retry</Text>
+                                </View>
+                            ) : (
+                                <Text>Verify code</Text>
+                            )}
                         </TouchableOpacity>
+                        {!isCodeValid && (
+                            <Text style={styles.mandatoryField}>
+                                The code is invalid. Please check your message
+                                again and fill the correct code. You can also
+                                copy paste it! After 3 failed attempts you
+                                should wait 5 min before you can request a new
+                                code.
+                            </Text>
+                        )}
+                        {attemtps && (
+                            <View>
+                                <Text style={styles.mandatoryField}>
+                                    Too many attempts. Please try again after 5
+                                    min. After 5 min the retry button will be
+                                    enabled and you can try again.
+                                </Text>
+                            </View>
+                        )}
                     </View>
                 ) : (
                     <TouchableOpacity
                         style={styles.button}
                         onPress={onButtonClick}
+
                         // onPress={() => onSelectSubEvent(subEvent)}
                     >
                         <Text>Send code</Text>
                     </TouchableOpacity>
                 )}
             </View>
-            <Button title="get token" onPress={handleGetToken} />
         </View>
     );
 };
@@ -208,6 +244,9 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+    },
+    error: {
+        color: "#ff0033",
     },
 });
 export default LoginScreenContent;

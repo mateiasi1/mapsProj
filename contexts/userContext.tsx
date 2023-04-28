@@ -4,6 +4,7 @@ import User from "../models/User";
 import { BE_API_URL } from "@env";
 import { HttpStatusCode } from "axios";
 import * as SecureStore from "expo-secure-store";
+import { CustomErrorCodes } from "../components/constants/customErrorCodes";
 
 export const UserContext = createContext(null);
 
@@ -24,6 +25,11 @@ export const UserContextProvider = ({ navigation, children }) => {
             });
             const data = await response.json();
             if (response.status === HttpStatusCode.Ok) {
+                console.log("data.statusCode1 " + JSON.stringify(data));
+                if (data.statusCode === CustomErrorCodes.MAX_ATTEMPT_REACHED) {
+                    console.log("data.statusCode" + data.statusCode);
+                    return CustomErrorCodes.MAX_ATTEMPT_REACHED;
+                }
                 setUser(data.user);
                 try {
                     await SecureStore.setItemAsync("_token", data.token);
