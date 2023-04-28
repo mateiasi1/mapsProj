@@ -98,13 +98,16 @@ const LoginScreenContent = ({ navigation }) => {
             });
     };
     const verifyOTP = async () => {
-        const loginStatus = login(phoneNumber, verificationCode);
-        console.log("loginStatus " + loginStatus);
+        const loginStatus = await login(phoneNumber, verificationCode);
+        console.log("loginStatus " + JSON.stringify(loginStatus) + "test");
         if (user) {
             navigation.navigate("Home");
         }
         if (loginStatus === HttpStatusCode.Unauthorized) {
             // TODO://add mesaj de trimite incearca din nou codul, la 3 greseli primesti altul dupa 5 min
+            console.log(
+                "loginStatus " + JSON.stringify(loginStatus) + "test333"
+            );
         }
     };
 

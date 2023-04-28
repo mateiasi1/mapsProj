@@ -23,20 +23,17 @@ export const UserContextProvider = ({ navigation, children }) => {
                 }),
             });
             const data = await response.json();
-
             if (response.status === HttpStatusCode.Ok) {
                 setUser(data.user);
                 try {
-                    // await AsyncStorage.setItem(
-                    //     "@token",
-                    //     JSON.stringify(data.token)
-                    // );
                     await SecureStore.setItemAsync("_token", data.token);
                 } catch (e) {
-                    // saving error
+                    console.log(e);
                 }
-                return response.status;
+                return HttpStatusCode.Ok;
             }
+            console.log("response.status " + response.status);
+            return HttpStatusCode.Unauthorized;
         } catch (error) {
             console.error("Error:  " + error);
         }
