@@ -25,9 +25,7 @@ export const UserContextProvider = ({ navigation, children }) => {
             });
             const data = await response.json();
             if (response.status === HttpStatusCode.Ok) {
-                console.log("data.statusCode1 " + JSON.stringify(data));
                 if (data.statusCode === CustomErrorCodes.MAX_ATTEMPT_REACHED) {
-                    console.log("data.statusCode" + data.statusCode);
                     return CustomErrorCodes.MAX_ATTEMPT_REACHED;
                 }
                 setUser(data.user);
@@ -38,7 +36,6 @@ export const UserContextProvider = ({ navigation, children }) => {
                 }
                 return HttpStatusCode.Ok;
             }
-            console.log("response.status " + response.status);
             return HttpStatusCode.Unauthorized;
         } catch (error) {
             console.error("Error:  " + error);
